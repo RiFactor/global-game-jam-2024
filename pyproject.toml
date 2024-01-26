@@ -1,0 +1,28 @@
+[project]
+name = "global-game-jam-2024"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "fjebaker", email = "fergusbkr@gmail.com"},
+]
+dependencies = [
+    "fastapi>=0.109.0",
+    "websockets>=12.0",
+    "uvicorn>=0.27.0",
+]
+requires-python = "==3.11.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.scripts]
+fmt = "black"
+debug = "uvicorn server.main:app --reload"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=24.1.0",
+]
