@@ -20,6 +20,7 @@ distribution = false
 
 [tool.pdm.scripts]
 fmt = "black"
+serve = "uvicorn server.main:app"
 debug = "uvicorn server.main:app --reload"
 
 [tool.pdm.dev-dependencies]
