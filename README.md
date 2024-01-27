@@ -10,7 +10,7 @@
                           __                                                      /\____/       
                         /` ,\__                                                   \_/__/
                        |    ).-'
-   ___________________/ .--'______          "Sponsored byAirDnB domiyes, pizzahat and beesechurgers"
+   ___________________/ .--'______          "Sponsored byAirDnB, domiyes, pizzahat & beesechurgers"
   |                  / /          |                 - a 5 Player interactive web browser video game
   |    ,      _.==''`  \          |                 - compete in pairs to answer prompts
   |  .'(  _.='         |          |                 - Written in 48hrs by 4 sleep deprived devs
