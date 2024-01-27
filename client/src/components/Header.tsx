@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 
+class UserData {
+    userid: Number;
+    constructor(userid: Number) {
+        this.userid = userid;
+    }
+}
+
 const Header = () => {
   const [string, setString] = useState("");
 
@@ -10,6 +17,7 @@ const Header = () => {
 
   const client_id = Date.now();
   const [ws, setWs] = useState<WebSocket | null>(null);
+  const [user_data, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -29,6 +37,10 @@ const Header = () => {
 
         let event = JSON.parse(content.data);
         switch (event.eventType) {
+          case "teamAssignment":
+            const ud = new UserData(event.data.userid);
+            setUserData(ud);
+            break;
           case "submissionState":
             // print the submission to the screen
             let content_box1 = document.createTextNode(event.data.submission);
@@ -51,7 +63,7 @@ const Header = () => {
         }
       };
     }
-  }, [ws, client_id]);
+  }, [ws, user_data, client_id]);
 
   useEffect(() => {
     document.addEventListener("keydown", (event: any) => {
