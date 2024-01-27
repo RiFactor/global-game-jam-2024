@@ -29,7 +29,9 @@ const Header = () => {
     const input = document.getElementById("messageText") as HTMLInputElement;
 
     if (input && ws) {
-      ws.send(input.value);
+      // pass the key to the server in json format
+      ws.send(JSON.parse( "{\"event\":\"keyPress\", \"data\":{\"value\": input.value}}"));
+      // clear the input value
       input.value = "";
     }
   }
