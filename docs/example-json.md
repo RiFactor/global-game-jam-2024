@@ -19,7 +19,7 @@
 {
     "eventType": "submissionState",
     "data" : {
-        "submisison" : "correct".
+        "submisison" : "correct",
         "state" : "<the state of the submission>"
     }
 }
@@ -31,7 +31,7 @@
 {
     "eventType": "submissionState",
     "data" : {
-        "submisison" : "incorrect".
+        "submisison" : "incorrect",
         "state" : "<the state of the submission>"
     }
 }
