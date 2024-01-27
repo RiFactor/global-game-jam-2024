@@ -45,3 +45,7 @@ export function keyBuffer(event: any, myTeamId: number, setOwnAnswers: (keys: Ke
         setEnemyAnswers(buffer.keys)
     }
 }
+
+export function setup(event: any, setWordLengths: (wordLengths: number[]) => void) {
+  setWordLengths(event.data.bufferLayout);
+}

@@ -21,7 +21,7 @@ const MainPage = () => {
   const [user_data, setUserData] = useState<UserData | null>(null);
   const [ownAnswers, setOwnAnswers] = useState<KeyPress[]>([]);
   const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
-  const [wordLengths, setWordLengths] = useState<number[]>([]); // TODO set from the setup event data
+  const [wordLengths, setWordLengths] = useState<number[]>([]);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -52,7 +52,10 @@ const MainPage = () => {
             break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
-            events.keyPress(event)
+            events.keyPress(event);
+            break;
+          case "setup":
+            events.setup(event, setWordLengths);
             break;
         }
       };
