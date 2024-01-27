@@ -14,7 +14,7 @@ const pixiApp = new Application({ resizeTo: window });
 const MainPage = () => {
 
   // BED says which user / side of keyboard
-  const [allowList, setAllowList] = useState([]);
+  const [allowList, setAllowList] = useState<string[]>([]);
 
   const client_id = Date.now();
   const [ws, setWs] = useState<WebSocket | null>(null);
