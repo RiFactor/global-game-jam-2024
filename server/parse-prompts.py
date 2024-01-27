@@ -1,8 +1,3 @@
-class Prompt:
-  def __init__(self, word, prompt):
-    self.word = word
-    self.prompt = prompt
-
 def ParsePrompts(filename) :
     """
     create a dictionary of difficulty to lists of prompts 
@@ -16,7 +11,6 @@ def ParsePrompts(filename) :
         if difficulty not in prompts:
             prompts[difficulty] = []
         prompts[difficulty].append(prompt)
-        
     return prompts
 
 def GetRandomPromptOfDifficulty(prompts,difficulty):
