@@ -7,6 +7,7 @@ import KeyPress from "../data/keyPress";
 import React, { useEffect, useState } from "react";
 import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 import UserData from "../data/UserData";
+import * as events from "../events"
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -56,35 +57,19 @@ const MainPage = () => {
   useEffect(() => {
     if (ws) {
       ws.onmessage = function (content) {
-        let messages = document.getElementById("messages");
-        let message = document.createElement("li");
-
         console.log(content);
 
         let event = JSON.parse(content.data);
         switch (event.eventType) {
           case "teamAssignment":
-            const ud = new UserData(event.data.userid);
-            setUserData(ud);
+            events.teamAssignment(event, setUserData)
             break;
           case "submissionState":
-            // print the submission to the screen
-            let content_box1 = document.createTextNode(event.data.submission);
-            message.appendChild(content_box1);
-            messages?.appendChild(message);
-
-            if (event.data.submissionState === "correct") {
-              // level passed
-            } else {
-              // level not finished
-            }
+            events.submissionState(event)
             break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
-            console.log(sendKey(event.data.value));
-            let content_box = document.createTextNode(event.data.value);
-            message.appendChild(content_box);
-            messages?.appendChild(message);
+            events.keyPress(event)
             break;
         }
       };
@@ -96,7 +81,7 @@ const MainPage = () => {
       const is_allowed = allowList.includes(event.key.toLowerCase());
       is_allowed ? console.log("send to server") : console.log("ignore");
       if (is_allowed && ws) {
-        ws.send(sendKey(event.key));
+        ws.send(events.sendKey(event.key));
       }
     };
 
@@ -113,16 +98,11 @@ const MainPage = () => {
 
     if (input && ws) {
       // pass the key to the server in json format
-      ws.send(sendKey(input.value));
+      ws.send(events.sendKey(input.value));
       // clear the input value
       input.value = "";
     }
   }
-
-  function sendKey(key: string) {
-    return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
-  }
-
 
   return (
     <>
