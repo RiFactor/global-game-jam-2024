@@ -1,27 +1,30 @@
 from typing import Any
-from fastapi import WebSocket
+from fastapi import WebSocket, WebSocketDisconnect
 
 import logging
 import json
 
 from dataclasses import dataclass
 
+
 @dataclass
 class Event:
-    event: str
+    eventType: str
     data: dict
 
     @staticmethod
     def from_json(text: str) -> "Event":
         data = json.loads(text)
-        return Event(data["event"], data["data"])
+        return Event(data["eventType"], data["data"])
 
     def to_json(self) -> str:
-        event = dict(event=self.event, data=self.data)
+        event = dict(event=self.eventType, data=self.data)
         return json.dumps(event)
+
 
 # prepend uvicorn so it all uses the same handler
 logger = logging.getLogger("uvicorn." + __name__)
+
 
 class UserConnection:
     def __init__(self, manager: "ConnectionManager", socket: WebSocket) -> None:
@@ -33,7 +36,6 @@ class UserConnection:
     async def receive_event(self) -> Event:
         text = await self.socket.receive_text()
         return Event.from_json(text)
-
 
     async def broadcast(self, event: Event) -> None:
         await self.send_broadcast(event.to_json())
@@ -54,9 +56,16 @@ class UserConnection:
 
     async def comm_loop(self) -> None:
         """Main communications loop"""
-        event = await self.receive_event()
-        logger.info("%s event from %s", event.event, self.identity)
+        try:
+            event = await self.receive_event()
+        except WebSocketDisconnect as err:
+            raise err
+        except json.JSONDecodeError:
+            logger.exception("JSON decoder error")
+            return
+        logger.info("%s event from %s", event.eventType, self.identity)
         await self.broadcast(event)
+
 
 class ConnectionManager:
     def __init__(self):
