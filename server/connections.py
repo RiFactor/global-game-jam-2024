@@ -3,6 +3,7 @@ from fastapi import WebSocket, WebSocketDisconnect
 
 import logging
 import json
+import random
 
 from dataclasses import dataclass
 
@@ -10,8 +11,9 @@ from dataclasses import dataclass
 logger = logging.getLogger("uvicorn." + __name__)
 
 KEY_PRESSED = "keyPress"
-TEAM_ASSIGN = "teamAssign"
+TEAM_ASSIGN = "teamAssignment"
 KEY_BUFFER = "keyBuffer"
+SETUP = "setup"
 
 
 @dataclass
@@ -31,6 +33,10 @@ class Event:
     @staticmethod
     def key_buffer(team: int, keys: list[dict]) -> "Event":
         return Event(KEY_BUFFER, dict(team=team, keys=keys))
+
+    @staticmethod
+    def setup(layout: list[int]) -> "Event":
+        return Event(SETUP, dict(bufferLayout=layout))
 
     def to_json(self) -> str:
         event = dict(eventType=self.eventType, data=self.data)
@@ -86,7 +92,9 @@ class UserConnection:
 
         if event.eventType == KEY_PRESSED:
             # add the event to the buffer, then broadcast to all
-            self.manager.buffers[self.team].append(event.data)
+            self.manager.buffers[self.team].append(
+                dict(key=event.data["value"],  userid=self.identity)
+            )
             await self.manager.broadcast_buffer(self.team)
         else:
             logger.error("Unknown event %s", event.eventType)
@@ -94,10 +102,26 @@ class UserConnection:
 
 
 class ConnectionManager:
-    def __init__(self):
+    def __init__(self, prompts: list[tuple[str, list[str]]]):
         self.usermap: dict[int, UserConnection] = {}
         self.team = {1: [], 2: []}
-        self.buffers: dict[int, list[dict]] = {1: [], 2:[]}
+        self.buffers: dict[int, list[dict]] = {1: [], 2: []}
+        self.prompts = prompts
+
+    def ready(self) -> bool:
+        return len(self.usermap) == 4
+
+    async def start(self) -> None:
+        logger.info("Starting game")
+
+        prompt = random.choice(self.prompts)
+        key, hints = prompt[0], prompt[1:]
+
+        layout = [len(key)]
+        await self.broadcast(Event.setup(layout).to_json())
+
+        # todo: send the hints later
+        _ = hints
 
     async def connect(self, websocket: WebSocket, client_id: int) -> UserConnection:
         await websocket.accept()
@@ -115,6 +139,7 @@ class ConnectionManager:
         # find what team / playernum they should be
         team, playernum = self._assign_team()
         user = UserConnection(self, websocket, client_id, team, playernum)
+        self.team[team].append(user.identity)
         logger.info(
             "Assigned %s to team %s as player %s", user.identity, team, playernum
         )
@@ -148,5 +173,3 @@ class ConnectionManager:
     async def broadcast_buffer(self, team: int) -> None:
         logger.debug("Broadcasting buffer of team %s", team)
         await self.broadcast(Event.key_buffer(team, self.buffers[team]).to_json())
-
-

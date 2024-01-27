@@ -37,9 +37,20 @@
         "keys": [
             {
                 "key": "a",
-                "userid": 1231231,
+                "userid": 1231231
             }
         ]
+    }
+}
+```
+
+## Server to client setup
+
+```
+{
+    "eventType": "setup",
+    "data" : {
+        "bufferLayout": [3, 4]
     }
 }
 ```
