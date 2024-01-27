@@ -1,12 +1,13 @@
 import { useApp, Container } from "@pixi/react";
 import SingleLetterIndicator from "./SingleLetterIndicator";
+import KeyPress from "../data/keyPress";
 
 type pos = {
     x: number,
     y: number
 };
 
-function AnswerLengthIndicator(props: {screenFraction: number, screenFractionOffset: number, spacing: number, wordLengths: number[]}) {
+function AnswerLengthIndicator(props: {screenFraction: number, screenFractionOffset: number, spacing: number, wordLengths: number[], currentAnswer: KeyPress[]}) {
     const app = useApp();
     const maxLength = Math.max(...props.wordLengths);
     const lineLength = Math.max(maxLength, 6);
@@ -53,8 +54,14 @@ function AnswerLengthIndicator(props: {screenFraction: number, screenFractionOff
 
     return <Container width={containerWidth} position={[app.screen.width * props.screenFractionOffset, 0]}>
         {
-           positions.map((pos) => {
-            return <SingleLetterIndicator width={itemWidth} x={pos.x} y={pos.y} isYou={true} />
+           positions.map((pos,index) => {
+                const currentAnswer = props.currentAnswer[index]
+                return <SingleLetterIndicator
+                    width={itemWidth}
+                    x={pos.x}
+                    y={pos.y}
+                    isYou={false}
+                    character={currentAnswer ? currentAnswer.key : undefined} />
            })
         }
     </Container>
