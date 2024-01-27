@@ -18,7 +18,7 @@ class Event:
         return Event(data["eventType"], data["data"])
 
     def to_json(self) -> str:
-        event = dict(event=self.eventType, data=self.data)
+        event = dict(eventType=self.eventType, data=self.data)
         return json.dumps(event)
 
 
