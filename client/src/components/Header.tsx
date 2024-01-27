@@ -58,8 +58,6 @@ const Header = () => {
         <input type="text" id="messageText" />
         <button type="submit">Send</button>
       </form>
-      <button onClick={() => console.log("click")}>click me</button>
-      <p>User has typed: {string}</p>
     </div>
   );
 };
