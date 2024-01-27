@@ -1,80 +1,83 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+
+import logging
+
+# prepend uvicorn so it all uses the same handler
+logger = logging.getLogger("uvicorn." + __name__)
+logger.setLevel(logging.DEBUG)
+logger.info("Server starting...")
+
+
+
+class UserData:
+    def __init__(self, manager: "ConnectionManager", socket: WebSocket) -> None:
+        self.manager = manager
+        self.identity = hash(socket)
+        self.socket = socket
+        self.name = ""
+        self.score = 0
+
+    async def receive(self) -> str:
+        return await self.socket.receive_text()
+
+    async def send_message(self, message: str):
+
+        logger.debug("Sending message to %s (%s)", self.identity, self.name)
+
+        await self.socket.send_text(message)
+
+    async def send_broadcast(self, message: str):
+        """Broadcast to all other users"""
+
+        logger.debug("Broadcasting to all from %s (%s)", self.identity, self.name)
+
+        for _id, user in self.manager.usermap.items():
+            if _id == self.identity:
+                continue
+            await user.socket.send_text(message)
+
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: list[WebSocket] = []
+        self.usermap: dict[int, UserData] = {}
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket) -> UserData:
         await websocket.accept()
-        self.active_connections.append(websocket)
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
+        data = UserData(self, websocket)
+        self.usermap[data.identity] = data
+        return data
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
+    def disconnect(self, user: UserData):
+        del self.usermap[user.identity]
 
     async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
+        """Broadcast to all users"""
+        for _, user in self.usermap.items():
+            await user.socket.send_text(message)
 
-html = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <h1>WebSocket Chat</h1>
-        <h2>Your ID: <span id="ws-id"></span></h2>
-        <form action="" onsubmit="sendMessage(event)">
-            <input type="text" id="messageText" autocomplete="off"/>
-            <button>Send</button>
-        </form>
-        <ul id='messages'>
-        </ul>
-        <script>
-            var client_id = Date.now()
-            document.querySelector("#ws-id").textContent = client_id;
-            var ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
-            ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
-            };
-            function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
-            }
-        </script>
-    </body>
-</html>
-"""
 
 app = FastAPI()
-app.state.manager = ConnectionManager()
 
-@app.get("/")
-async def get():
-    return HTMLResponse(html)
+# setup the manager to use throughout the application
+app.state.manager = ConnectionManager()
+app.mount("/", StaticFiles(directory="client/build/", html=True), name="static")
+
 
 @app.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: int):
-    manager = websocket.app.state.manager
+async def websocket_endpoint(websocket: WebSocket):
+    manager: ConnectionManager = websocket.app.state.manager
 
-    await manager.connect(websocket)
+    user = await manager.connect(websocket)
+    logger.debug("New connection: %s", user.identity)
+
     try:
         while True:
-            data = await websocket.receive_text()
-            await manager.send_personal_message(f"You wrote: {data}", websocket)
-            await manager.broadcast(f"Client #{client_id} says: {data}")
+            data = await user.receive()
+            await user.send_message(f"You sent: {data}")
+            await user.send_broadcast(f"{user.identity} sends: {data}")
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        await manager.broadcast(f"Client #{client_id} left the chat")
-
-
+        manager.disconnect(user)
+        # await manager.broadcast(f"Client {user.identity} left the chat")

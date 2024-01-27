@@ -19,7 +19,7 @@ license = {text = "MIT"}
 distribution = false
 
 [tool.pdm.scripts]
-fmt = "black"
+fmt = "black server"
 serve = "uvicorn server.main:app"
 debug = "uvicorn server.main:app --reload"
 
