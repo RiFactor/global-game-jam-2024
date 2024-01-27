@@ -1,4 +1,4 @@
-def ParsePrompts(filename) :
+def ParsePrompts(filename):
     """
     create a dictionary of difficulty to a list of dict{<string word>, <list of prompts>}
     """
