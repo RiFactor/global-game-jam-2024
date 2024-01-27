@@ -4,9 +4,8 @@ export function sendKey(key: string) {
   return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
 }
 
-export function teamAssignment(event: any, setUserData: (data: any) => void) {
-    const ud = new UserData(event.data.userid);
-    setUserData(ud);
+export function teamAssignment(event: any, setUserData: (data: UserData) => void) {
+    setUserData(event.data);
 }
 
 export function submissionState(event: any) {
