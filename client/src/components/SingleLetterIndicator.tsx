@@ -11,8 +11,16 @@ function SingleLetterIndicator(props: {width: number, x: number, y: number, char
 
     return <>
         <Graphics draw={draw} />
-        {props.character ? <Container x={props.x} y={props.y} height={props.width} width={props.width}>
-            <Text text={props.character} anchor={0.5} x={props.width / 2} y={props.width / 2} />
+        {props.character ? <Container
+            x={props.x}
+            y={props.y}
+            height={props.width}
+            width={props.width}>
+            <Text
+                text={props.character}
+                anchor={0.5}
+                x={props.width / 2}
+                y={props.width / 2} />
         </Container> : undefined}
     </>
 }
