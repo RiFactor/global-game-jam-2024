@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
-
-class UserData {
-  userid: Number;
-  constructor(userid: Number) {
-    this.userid = userid;
-  }
-}
+import UserData from "../data/UserData";
 
 const Header = () => {
   const [string, setString] = useState("");
