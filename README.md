@@ -25,4 +25,7 @@
   \_______________________________/  \___/
 
 ```
+[global-game-jam](https://globalgamejam.org/games/2024/please-laugh-8)
 [duckumentation](https://github.com/RiFactor/global-game-jam-2024/blob/main/docs/usage.md)
+
+
