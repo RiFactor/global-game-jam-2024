@@ -1,0 +1,81 @@
+def ParsePrompts(filename):
+    """
+<<<<<<< HEAD
+    create a dictionary of difficulty to a list of dict{<string word>, <list of prompts>}
+||||||| parent of 6f2b338 (chore: black formatting)
+    create a dictionary of difficulty to lists of prompts 
+=======
+    create a dictionary of difficulty to lists of prompts
+>>>>>>> 6f2b338 (chore: black formatting)
+    """
+<<<<<<< HEAD
+    promptLookups = {}
+    f = open(filename, 'r')
+||||||| parent of 6f2b338 (chore: black formatting)
+    prompts = {}
+    f = open(filename, 'r')
+=======
+    prompts = {}
+    f = open(filename, "r")
+>>>>>>> 6f2b338 (chore: black formatting)
+    for line in f:
+<<<<<<< HEAD
+        data = line.strip().split(',')
+        promptLookup = {
+            "word":data[0].strip(),
+            "prompts": [x.strip() for x in data[1:]]
+            }
+        difficulty = len(data[0].strip())
+        if difficulty not in promptLookups:
+            promptLookups[difficulty] = []
+        promptLookups[difficulty].append(promptLookup)
+    return promptLookups
+||||||| parent of 6f2b338 (chore: black formatting)
+        w, p= line.strip().split('-')
+        prompt = {w.strip(), p.strip()}
+        difficulty = len(w.strip())
+        if difficulty not in prompts:
+            prompts[difficulty] = []
+        prompts[difficulty].append(prompt)
+    return prompts
+=======
+        w, p = line.strip().split("-")
+        prompt = {w.strip(), p.strip()}
+        difficulty = len(w.strip())
+        if difficulty not in prompts:
+            prompts[difficulty] = []
+        prompts[difficulty].append(prompt)
+    return prompts
+>>>>>>> 6f2b338 (chore: black formatting)
+
+<<<<<<< HEAD
+def GetRandomPromptOfDifficulty(promptLookups,difficulty):
+||||||| parent of 6f2b338 (chore: black formatting)
+def GetRandomPromptOfDifficulty(prompts,difficulty):
+=======
+
+def GetRandomPromptOfDifficulty(prompts, difficulty):
+>>>>>>> 6f2b338 (chore: black formatting)
+    import random
+<<<<<<< HEAD
+    return random.choice(list(promptLookups[difficulty]))
+||||||| parent of 6f2b338 (chore: black formatting)
+    return random.choice(list(prompts[difficulty]))
+=======
+
+    return random.choice(list(prompts[difficulty]))
+>>>>>>> 6f2b338 (chore: black formatting)
+
+<<<<<<< HEAD
+# example retrieval of a random word and prompt/s of difficulty 3
+print(f"Example of difficulty 3: {GetRandomPromptOfDifficulty(ParsePrompts('../assets/prompts.csv'), 3)}")
+||||||| parent of 6f2b338 (chore: black formatting)
+# example retrieval of a random prompt of difficulty 3
+print(f"Example of difficulty 3: {GetRandomPromptOfDifficulty(ParsePrompts('../assets/prompts.txt'), 3)}")
+=======
+
+# example retrieval of a random prompt of difficulty 3
+print(
+    f"Example of difficulty 3: {GetRandomPromptOfDifficulty(ParsePrompts('../assets/prompts.txt'), 3)}"
+)
+>>>>>>> 6f2b338 (chore: black formatting)
