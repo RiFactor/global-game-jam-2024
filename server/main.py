@@ -22,7 +22,7 @@ app.state.manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     manager: ConnectionManager = websocket.app.state.manager
 
-    user = await manager.connect(websocket)
+    user = await manager.connect(websocket, client_id)
     logger.debug("New connection: %s", user.identity)
 
     try:

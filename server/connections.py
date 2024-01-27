@@ -17,6 +17,10 @@ class Event:
         data = json.loads(text)
         return Event(data["eventType"], data["data"])
 
+    @staticmethod
+    def team_assign(team: int) -> "Event":
+        return Event("teamAssign", dict(team=team))
+
     def to_json(self) -> str:
         event = dict(eventType=self.eventType, data=self.data)
         return json.dumps(event)
@@ -27,8 +31,9 @@ logger = logging.getLogger("uvicorn." + __name__)
 
 
 class UserConnection:
-    def __init__(self, manager: "ConnectionManager", socket: WebSocket) -> None:
+    def __init__(self, manager: "ConnectionManager", socket: WebSocket, client_id: int) -> None:
         self.manager = manager
+        self.client_id = client_id
         self.identity = hash(socket)
         self.socket = socket
         self.name = ""
@@ -70,15 +75,34 @@ class UserConnection:
 class ConnectionManager:
     def __init__(self):
         self.usermap: dict[int, UserConnection] = {}
+        self.team = {1: [], 2:[]}
 
-    async def connect(self, websocket: WebSocket) -> UserConnection:
+    async def connect(self, websocket: WebSocket, client_id: int) -> UserConnection:
         await websocket.accept()
+        user = UserConnection(self, websocket, client_id)
+        self.usermap[user.identity] = user
 
-        data = UserConnection(self, websocket)
-        self.usermap[data.identity] = data
-        return data
+        await self._assign_team(user)
+        return user
+
+    async def _assign_team(self, user: UserConnection) -> None:
+        for i in range(1, 3):
+            if len(self.team[i]) < 2:
+                self.team[i].append(user.identity)
+                await user.send_message(Event.team_assign(i).to_json())
+                logger.info("Assigned %s to team %s", user.identity, i)
+                return
+        else:
+            logger.error("Too many users")
 
     def disconnect(self, user: UserConnection) -> None:
+        for _, players in self.team.items():
+            if user.identity in players:
+                players.remove(user.identity)
+                break
+        else:
+            logger.warn("User %s was not in any team", user.identity)
+
         del self.usermap[user.identity]
 
     async def broadcast(self, message: str) -> None:
