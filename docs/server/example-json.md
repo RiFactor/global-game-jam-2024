@@ -44,6 +44,20 @@
 }
 ```
 
+## Server to client next prompt
+
+The `continued` flag indicates whether this should be added to the previous prompt. If it is 1, it is continued. If it is 0, it is a new prompt.
+
+```
+{
+    "eventType": "prompt",
+    "data" : {
+        "continued": 1,
+        "prompt": "This cat's gone wild"
+    }
+}
+```
+
 ## Server to Client success
 
 ```json
