@@ -8,6 +8,7 @@ type pos = {
 };
 
 type AnswerLengthIndicatorProps = {
+    myUserId?: number,
     screenFraction: number,
     screenFractionOffset: number,
     spacing: number,
@@ -68,7 +69,7 @@ function AnswerLengthIndicator(props: AnswerLengthIndicatorProps) {
                     width={itemWidth}
                     x={pos.x}
                     y={pos.y}
-                    isYou={false}
+                    isYou={currentAnswer ? currentAnswer.userid == props.myUserId : false}
                     character={currentAnswer ? currentAnswer.key : undefined} />
            })
         }
