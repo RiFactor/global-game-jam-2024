@@ -97,7 +97,7 @@ class ConnectionManager:
     def __init__(self, prompts: list[tuple[str, list[str]]]):
         self.usermap: dict[int, UserConnection] = {}
         self.team = {1: [], 2: []}
-        self.buffers: dict[int, list[dict]] = {1: [], 2:[]}
+        self.buffers: dict[int, list[dict]] = {1: [], 2: []}
         self.prompts = prompts
 
     def ready(self) -> bool:
@@ -156,5 +156,3 @@ class ConnectionManager:
     async def broadcast_buffer(self, team: int) -> None:
         logger.debug("Broadcasting buffer of team %s", team)
         await self.broadcast(Event.key_buffer(team, self.buffers[team]).to_json())
-
-

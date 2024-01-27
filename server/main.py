@@ -20,6 +20,7 @@ app = FastAPI()
 # setup the manager to use throughout the application
 app.state.manager = ConnectionManager(PROMPTS)
 
+
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     manager: ConnectionManager = websocket.app.state.manager

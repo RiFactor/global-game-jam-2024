@@ -1,4 +1,3 @@
-
 def parse_prompts(filename: str) -> list[tuple[str, list[str]]]:
     promptLookups: list[tuple[str, list[str]]] = []
 
@@ -10,4 +9,3 @@ def parse_prompts(filename: str) -> list[tuple[str, list[str]]]:
             promptLookups.append((word, prompts))
 
     return promptLookups
-
