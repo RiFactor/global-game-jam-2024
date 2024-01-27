@@ -23,13 +23,12 @@ const Header = () => {
 
   useEffect(() => {
     if (ws) {
-      ws.onmessage = function (event) {
+      ws.onmessage = function (content) {
         let messages = document.getElementById("messages");
         let message = document.createElement("li");
-        
+        console.log(content);
+        let event = JSON.parse(content.data);
         switch (event.eventType) {
-
-          // if gameState is recieved 
           case "submissionState":
             // print the submission to the screen
             let content = document.createTextNode(event.data.submission);
@@ -41,14 +40,14 @@ const Header = () => {
             }  else {
               // level not finished
             }
-            break
-
+            break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
+            console.log(event.data);
             content = document.createTextNode(event.data.value);
             message.appendChild(content);
             messages?.appendChild(message);
-            break
+            break;
         }
       };
     }
@@ -67,7 +66,7 @@ const Header = () => {
 
     if (input && ws) {
       // pass the key to the server in json format
-      ws.send(JSON.parse( "{\"eventType\":\"keyPress\", \"data\":{\"value\": input.value}}"));
+      ws.send(`{"eventType":"keyPress", "data":{"value": "${input.value}"}}`);
       // clear the input value
       input.value = "";
     }
