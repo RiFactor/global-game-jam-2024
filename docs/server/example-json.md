@@ -22,8 +22,7 @@
     "eventType": "keyPress",
     "data" : {
         "value" : "a",
-        "userid": 1231231,
-        "team": 1
+        "userid": 1231231
     }
 }
 ```
