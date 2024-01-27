@@ -74,7 +74,7 @@ const Header = () => {
           ws.send(sendKey(event.key));
       }
     });
-  }, [ws, allowList]);
+  }, [ws]);
 
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
