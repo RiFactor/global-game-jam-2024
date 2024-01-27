@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const Header = () => {
-  const [client_id, setClientId] = useState(Date.now());
+  const client_id = Date.now();
   const [ws, setWs] = useState<WebSocket | null>(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Header = () => {
         messages?.appendChild(message);
       };
     }
-  }, [ws]);
+  }, [ws, client_id]);
 
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
