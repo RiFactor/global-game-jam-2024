@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-const permittedKeysOne = ["a", "b", "c"];
-const permittedKeysTwo = ["x", "y", "z"];
+import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 
 const Header = () => {
   const [string, setString] = useState("");
