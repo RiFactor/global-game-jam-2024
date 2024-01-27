@@ -1,6 +1,19 @@
 
 # Example json Packets
 
+## Team assignment (server to client)
+
+```json
+{
+    "eventType": "teamAssignment",
+    "data" : {
+        "team" : 1,
+        "playernum": 1,
+        "userid" : 1231231
+    }
+}
+```
+
 
 ## Client to server key press
 
@@ -8,13 +21,31 @@
 {
     "eventType": "keyPress",
     "data" : {
-        "value" : "a"
+        "value" : "a",
+        "userid": 1231231
+    }
+}
+```
+
+## Server to client keys
+
+```json
+{
+    "eventType": "keyBuffer",
+    "data" : {
+        "team": 1,
+        "keys": [
+            {
+                "key": "a",
+                "userid": 1231231,
+            }
+        ]
     }
 }
 ```
 
 ## Server to Client success
-    
+
 ```json
 {
     "eventType": "submissionState",
