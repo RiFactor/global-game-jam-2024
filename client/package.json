@@ -42,5 +42,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@3sidedcube/prettier-config": "^1.0.1"
+  },
+  "prettier": "@3sidedcube/prettier-config"
+
 }

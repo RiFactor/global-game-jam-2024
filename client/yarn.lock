@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@3sidedcube/prettier-config@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@3sidedcube/prettier-config/-/prettier-config-1.0.1.tgz#006d1b362760960bea968269aa193f90aed02bc9"
+  integrity sha512-CbhSmk2SC7tlO45nCJwMnPgAabnMgNApvQ919DRMqwVfXlOinaUOMGDJdgQpDI33IsxM9KLnzeO5ODdxl/ZtoA==
+
 "@aashutoshrathi/word-wrap@^1.2.3":
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
