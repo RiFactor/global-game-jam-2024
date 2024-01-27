@@ -45,8 +45,7 @@ const MainPage = () => {
   const [user_data, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
-    // const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
-    const newWs = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+    const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
     console.log(client_id);
     setWs(newWs);
     // return () => {
