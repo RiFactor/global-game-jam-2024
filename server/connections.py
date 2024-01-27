@@ -18,8 +18,8 @@ class Event:
         return Event(data["eventType"], data["data"])
 
     @staticmethod
-    def team_assign(team: int) -> "Event":
-        return Event("teamAssign", dict(team=team))
+    def team_assign(uid: int, team: int) -> "Event":
+        return Event("teamAssign", dict(userid=uid, team=team))
 
     def to_json(self) -> str:
         event = dict(eventType=self.eventType, data=self.data)
@@ -89,7 +89,7 @@ class ConnectionManager:
         for i in range(1, 3):
             if len(self.team[i]) < 2:
                 self.team[i].append(user.identity)
-                await user.send_message(Event.team_assign(i).to_json())
+                await user.send_message(Event.team_assign(user.identity, i).to_json())
                 logger.info("Assigned %s to team %s", user.identity, i)
                 return
         else:
