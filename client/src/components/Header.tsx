@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-const permittedKeysOne = ["a", "b", "c"];
-const permittedKeysTwo = ["x", "y", "z"];
+import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 
 const Header = () => {
   const [string, setString] = useState("");
@@ -86,8 +84,6 @@ const Header = () => {
         <input type="text" id="messageText" />
         <button type="submit">Send</button>
       </form>
-      <button onClick={() => console.log("click")}>click me</button>
-      <p>User has typed: {string}</p>
     </div>
   );
 };
