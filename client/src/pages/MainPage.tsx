@@ -12,9 +12,6 @@ import * as events from "../events"
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
 
-// TODO test data, should be deleted
-const wordLengths = [2, 3, 4];
-
 const MainPage = () => {
 
   // BED says which user / side of keyboard
@@ -26,6 +23,7 @@ const MainPage = () => {
   const [user_data, setUserData] = useState<UserData | null>(null);
   const [ownAnswers, setOwnAnswers] = useState<KeyPress[]>([]);
   const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
+  const [wordLengths, setWordLengths] = useState<number[]>([]); // TODO set from the setup event data
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
