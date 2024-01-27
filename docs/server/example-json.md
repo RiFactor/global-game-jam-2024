@@ -8,6 +8,7 @@
     "eventType": "teamAssignment",
     "data" : {
         "team" : 1,
+        "playernum": 1,
         "userid" : 1231231
     }
 }
