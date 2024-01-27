@@ -16,7 +16,7 @@ const TeamDisplay = () => {
   }
 
   return (
-    <div className="bg-blue-200 max-w-40 m-20 rounded">
+    <div className="bg-blue-200 w-40 m-5 rounded text-center">
       <div className="bg-yellow-200 rounded p-5">
         <p>Team {team}</p>
         <p>Player {playernum}</p>
