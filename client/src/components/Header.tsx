@@ -26,13 +26,15 @@ const Header = () => {
       ws.onmessage = function (content) {
         let messages = document.getElementById("messages");
         let message = document.createElement("li");
+
         console.log(content);
+
         let event = JSON.parse(content.data);
         switch (event.eventType) {
           case "submissionState":
             // print the submission to the screen
-            let content = document.createTextNode(event.data.submission);
-            message.appendChild(content);
+            let content_box1 = document.createTextNode(event.data.submission);
+            message.appendChild(content_box1);
             messages?.appendChild(message);
 
             if (event.data.submissionState == "correct") {
@@ -44,8 +46,8 @@ const Header = () => {
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
             console.log(event.data);
-            content = document.createTextNode(event.data.value);
-            message.appendChild(content);
+            let content_box = document.createTextNode(event.data.value);
+            message.appendChild(content_box);
             messages?.appendChild(message);
             break;
         }
