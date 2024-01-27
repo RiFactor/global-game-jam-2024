@@ -11,7 +11,7 @@
                           __                                                      /\____/
                         /` ,\__                                                   \_/__/
                        |    ).-'
-   ___________________/ .--'______               "sponsored by domiyes, pizzahat and beesechurgers"
+   ___________________/ .--'______          "Sponsored byAirDnB domiyes, pizzahat and beesechurgers"
   |                  / /          |                 - a 5 Player interactive web browser video game
   |    ,      _.==''`  \          |                 - compete in pairs to answer prompts
   |  .'(  _.='         |          |                 - Written in 48hrs by 4 sleep deprived devs
@@ -28,4 +28,4 @@
 ```
 
 - [global-game-jam](https://globalgamejam.org/games/2024/please-laugh-8)
-- [duckumentation](https://github.com/RiFactor/global-game-jam-2024/tree/main/docs)
+- [duckumentation](https://github.com/RiFactor/global-game-jam-2024/blob/main/docs/usage.md)
