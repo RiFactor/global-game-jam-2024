@@ -37,7 +37,7 @@
         "keys": [
             {
                 "key": "a",
-                "userid": 1231231,
+                "userid": 1231231
             }
         ]
     }
@@ -50,7 +50,7 @@
 {
     "eventType": "setup",
     "data" : {
-        "bufferLayout": [3, 4],
+        "bufferLayout": [3, 4]
     }
 }
 ```
