@@ -10,7 +10,8 @@ export function sendKey(key: string) {
 export function teamAssignment(event: any, setUserData: (data: UserData) => void, setAllowList: (allowList: string[]) => void) {
     const userData = event.data as UserData;
     setUserData(userData);
-    setAllowList(userData.playernum === 1 ? permittedKeysOne : permittedKeysTwo)
+    const allowed_list = userData.playernum === 1 ? permittedKeysOne : permittedKeysTwo;
+    setAllowList(allowed_list);
 }
 
 export function submissionState(event: any) {
