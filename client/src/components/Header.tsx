@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 
+const permittedKeysOne = ["a", "b", "c"];
+const permittedKeysTwo = ["x", "y", "z"];
+
 const Header = () => {
+  const [string, setString] = useState("");
+
+  // BED says which user / side of keyboard
+  const playerOne = true;
+  const [allowList, setAllowList] = useState(playerOne ? permittedKeysOne : permittedKeysTwo);
+
   const client_id = Date.now();
   const [ws, setWs] = useState<WebSocket | null>(null);
 
@@ -24,6 +33,13 @@ const Header = () => {
     }
   }, [ws, client_id]);
 
+  useEffect(() => {
+    document.addEventListener("keydown", (event: any) => {
+      allowList.includes(event.key) ? console.log("send to server") : console.log("ignore");
+      setString(event.key);
+    });
+  }, [allowList]);
+
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const input = document.getElementById("messageText") as HTMLInputElement;
@@ -43,6 +59,7 @@ const Header = () => {
         <button type="submit">Send</button>
       </form>
       <button onClick={() => console.log("click")}>click me</button>
+      <p>User has typed: {string}</p>
     </div>
   );
 };
