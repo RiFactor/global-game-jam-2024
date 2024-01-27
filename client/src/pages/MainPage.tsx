@@ -44,6 +44,8 @@ const MainPage = () => {
   const client_id = Date.now();
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [user_data, setUserData] = useState<UserData | null>(null);
+  const [ownAnswers, setOwnAnswers] = useState<KeyPress[]>([]);
+  const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -66,6 +68,11 @@ const MainPage = () => {
             break;
           case "submissionState":
             events.submissionState(event)
+            break;
+          case "keyBuffer":
+            if (user_data) {
+              events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers)
+            }
             break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":

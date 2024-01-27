@@ -1,4 +1,6 @@
 import UserData from "./data/UserData";
+import KeyBuffer from "./data/keyBuffer";
+import KeyPress from "./data/keyPress";
 
 export function sendKey(key: string) {
   return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
@@ -30,4 +32,13 @@ export function keyPress(event: any) {
     let content_box = document.createTextNode(event.data.value);
     message.appendChild(content_box);
     messages?.appendChild(message);
+}
+
+export function keyBuffer(event: any, myTeamId: number, setOwnAnswers: (keys: KeyPress[]) => void, setEnemyAnswers: (keys: KeyPress[]) => void) {
+    const buffer = event.data as KeyBuffer;
+    if (buffer.team === myTeamId) {
+        setOwnAnswers(buffer.keys)
+    } else {
+        setEnemyAnswers(buffer.keys)
+    }
 }
