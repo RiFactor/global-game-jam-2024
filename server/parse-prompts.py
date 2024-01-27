@@ -1,6 +1,6 @@
 def ParsePrompts(filename) :
     """
-    create a dictionary of difficulty to lists of prompts 
+    create a dictionary of difficulty to a list of dict{<string word>, <list of prompts>}
     """
     promptLookups = {}
     f = open(filename, 'r')
