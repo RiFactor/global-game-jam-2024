@@ -50,9 +50,6 @@ const MainPage = () => {
             wordLengths={wordLengths}
             currentAnswer={rightAnswer}
             screenFractionOffset={0.6} />
-          <Container x={400} y={330} anchor={0.5}>
-            <Text text="Hello World" anchor={{ x: 0.5, y: 0.5 }} />
-          </Container>
         </FullScreenStage>
       </AppProvider>
     </>
