@@ -3,6 +3,7 @@ from fastapi import WebSocket, WebSocketDisconnect
 
 import logging
 import json
+import random
 
 from dataclasses import dataclass
 
@@ -12,6 +13,7 @@ logger = logging.getLogger("uvicorn." + __name__)
 KEY_PRESSED = "keyPress"
 TEAM_ASSIGN = "teamAssign"
 KEY_BUFFER = "keyBuffer"
+SETUP = "setup"
 
 
 @dataclass
@@ -31,6 +33,10 @@ class Event:
     @staticmethod
     def key_buffer(team: int, keys: list[dict]) -> "Event":
         return Event(KEY_BUFFER, dict(team=team, keys=keys))
+
+    @staticmethod
+    def setup(layout: list[int]) -> "Event":
+        return Event(SETUP, dict(layout=layout))
 
     def to_json(self) -> str:
         event = dict(eventType=self.eventType, data=self.data)
@@ -105,6 +111,15 @@ class ConnectionManager:
 
     async def start(self) -> None:
         logger.info("Starting game")
+
+        prompt = random.choice(self.prompts)
+        key, hints = prompt[0], prompt[1:]
+
+        layout = [len(key)]
+        await self.broadcast(Event.setup(layout).to_json())
+
+        # todo: send the hints later
+        _ = hints
 
     async def connect(self, websocket: WebSocket, client_id: int) -> UserConnection:
         await websocket.accept()
