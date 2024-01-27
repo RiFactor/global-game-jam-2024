@@ -1,5 +1,11 @@
+import NavButton from "./NavButton";
+
 const NavBar = () => {
-  return <div>NavBar</div>;
+  return (
+    <ul>
+      <NavButton name="Home" to="/" />
+    </ul>
+  );
 };
 
 export default NavBar;
