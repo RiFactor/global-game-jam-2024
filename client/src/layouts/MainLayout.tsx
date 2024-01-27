@@ -4,8 +4,8 @@ import NavBar from "../components/NavBar";
 
 const MainLayout = () => {
   return (
-    <div className="flex flex-col">
-      <Header />
+    <div className="flex flex-col w-screen h-screen bg-black">
+      {/* <Header /> */}
       {/* <NavBar /> */}
       <Outlet />
     </div>

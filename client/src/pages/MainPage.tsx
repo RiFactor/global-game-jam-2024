@@ -8,9 +8,14 @@ import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 import UserData from "../data/UserData";
 import * as events from "../events";
 import TeamDisplay from "../components/TeamDisplay";
+import MainPageBackground from "../components/MainPageBackground";
+import MoonStationImage from "../assets/moon-station.jpeg";
 
 // TODO: is there a better way to do this than just declaring here?
-const pixiApp = new Application({ resizeTo: window });
+const pixiApp = new Application({
+  resizeTo: window
+  // transparent: true
+});
 
 // TODO test data, should be deleted
 const wordLengths = [2, 3, 4];
@@ -92,6 +97,7 @@ const MainPage = () => {
     };
   }, [ws]);
 
+  // TODO is this needed?
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const input = document.getElementById("messageText") as HTMLInputElement;
@@ -105,27 +111,34 @@ const MainPage = () => {
   }
 
   return (
-    <div className="flex flex-col items-center bg-slate-200">
-      <TeamDisplay />
-      <AppProvider value={pixiApp}>
-        <FullScreenStage>
-          <AnswerLengthIndicator
-            myUserId={myUserId}
-            screenFraction={0.3}
-            spacing={10}
-            wordLengths={wordLengths}
-            currentAnswer={leftAnswer}
-            screenFractionOffset={0.1}
-          />
-          <AnswerLengthIndicator
-            screenFraction={0.3}
-            spacing={10}
-            wordLengths={wordLengths}
-            currentAnswer={rightAnswer}
-            screenFractionOffset={0.6}
-          />
-        </FullScreenStage>
-      </AppProvider>
+    <div
+      className="flex flex-col items-center bg-orange-300 w-full h-full"
+      // style={{ backgroundImage: `url(${MoonStationImage})` }}
+    >
+      {/* <img src={MoonStationImage} alt="" role="presentation" className="-z-2" width={"100%"} height={"100%"} /> */}
+      <div className="w-screen h-screen">
+        <AppProvider value={pixiApp}>
+          <FullScreenStage>
+            {/* <TeamDisplay /> */}
+            <MainPageBackground />
+            <AnswerLengthIndicator
+              myUserId={myUserId}
+              screenFraction={0.3}
+              spacing={10}
+              wordLengths={wordLengths}
+              currentAnswer={leftAnswer}
+              screenFractionOffset={0.1}
+            />
+            <AnswerLengthIndicator
+              screenFraction={0.3}
+              spacing={10}
+              wordLengths={wordLengths}
+              currentAnswer={rightAnswer}
+              screenFractionOffset={0.6}
+            />
+          </FullScreenStage>
+        </AppProvider>
+      </div>
     </div>
   );
 };
