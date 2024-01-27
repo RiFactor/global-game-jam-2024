@@ -26,9 +26,21 @@ const Header = () => {
       ws.onmessage = function (event) {
         let messages = document.getElementById("messages");
         let message = document.createElement("li");
-        let content = document.createTextNode(event.data);
-        message.appendChild(content);
-        messages?.appendChild(message);
+        
+        switch (event.eventType) {
+          // if gameState is recieved 
+          case "submissionState":
+            // print the submission to the screen
+            let content = document.createTextNode(event.data.submission);
+            message.appendChild(content);
+            messages?.appendChild(message);
+
+            if (event.data.submissionState == "correct") {
+              // level passed
+            }  else {
+              // level not finished
+            }
+        }
       };
     }
   }, [ws, client_id]);
@@ -46,7 +58,7 @@ const Header = () => {
 
     if (input && ws) {
       // pass the key to the server in json format
-      ws.send(JSON.parse( "{\"event\":\"keyPress\", \"data\":{\"value\": input.value}}"));
+      ws.send(JSON.parse( "{\"eventType\":\"keyPress\", \"data\":{\"value\": input.value}}"));
       // clear the input value
       input.value = "";
     }
