@@ -55,10 +55,14 @@ const Header = () => {
 
   useEffect(() => {
     document.addEventListener("keydown", (event: any) => {
-      allowList.includes(event.key) ? console.log("send to server") : console.log("ignore");
+      const is_allowed = allowList.includes(event.key);
+      is_allowed ? console.log("send to server") : console.log("ignore");
       setString(event.key);
+      if (is_allowed && ws) {
+          ws.send(`{"eventType":"keyPress", "data":{"value": "${event.key}"}}`);
+      }
     });
-  }, [allowList]);
+  }, [ws, allowList]);
 
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
