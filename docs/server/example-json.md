@@ -44,6 +44,17 @@
 }
 ```
 
+## Server to client setup
+
+```
+{
+    "eventType": "setup",
+    "data" : {
+        "bufferLayout": [3, 4],
+    }
+}
+```
+
 ## Server to client next prompt
 
 The `continued` flag indicates whether this should be added to the previous prompt. If it is 1, it is continued. If it is 0, it is a new prompt.
