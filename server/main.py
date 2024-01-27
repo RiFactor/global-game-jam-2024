@@ -10,7 +10,6 @@ logger.setLevel(logging.DEBUG)
 logger.info("Server starting...")
 
 
-
 class UserData:
     def __init__(self, manager: "ConnectionManager", socket: WebSocket) -> None:
         self.manager = manager
@@ -22,13 +21,13 @@ class UserData:
     async def receive(self) -> str:
         return await self.socket.receive_text()
 
-    async def send_message(self, message: str):
+    async def send_message(self, message: str) -> None:
 
         logger.debug("Sending message to %s (%s)", self.identity, self.name)
 
         await self.socket.send_text(message)
 
-    async def send_broadcast(self, message: str):
+    async def send_broadcast(self, message: str) -> None:
         """Broadcast to all other users"""
 
         logger.debug("Broadcasting to all from %s (%s)", self.identity, self.name)
@@ -50,10 +49,10 @@ class ConnectionManager:
         self.usermap[data.identity] = data
         return data
 
-    def disconnect(self, user: UserData):
+    def disconnect(self, user: UserData) -> None:
         del self.usermap[user.identity]
 
-    async def broadcast(self, message: str):
+    async def broadcast(self, message: str) -> None:
         """Broadcast to all users"""
         for _, user in self.usermap.items():
             await user.socket.send_text(message)
