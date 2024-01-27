@@ -54,7 +54,7 @@ function AnswerLengthIndicator(props: {screenFraction: number, screenFractionOff
     return <Container width={containerWidth} position={[app.screen.width * props.screenFractionOffset, 0]}>
         {
            positions.map((pos) => {
-            return <SingleLetterIndicator width={itemWidth} x={pos.x} y={pos.y} />
+            return <SingleLetterIndicator width={itemWidth} x={pos.x} y={pos.y} isYou={true} />
            })
         }
     </Container>
