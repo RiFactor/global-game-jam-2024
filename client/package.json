@@ -47,5 +47,4 @@
     "@3sidedcube/prettier-config": "^1.0.1"
   },
   "prettier": "@3sidedcube/prettier-config"
-
 }
