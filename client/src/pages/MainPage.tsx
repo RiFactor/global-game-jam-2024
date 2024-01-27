@@ -76,7 +76,7 @@ const MainPage = () => {
     return () => {
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [ws]);
+  }, [ws, allowList]);
 
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

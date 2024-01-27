@@ -11,7 +11,7 @@ from dataclasses import dataclass
 logger = logging.getLogger("uvicorn." + __name__)
 
 KEY_PRESSED = "keyPress"
-TEAM_ASSIGN = "teamAssign"
+TEAM_ASSIGN = "teamAssignment"
 KEY_BUFFER = "keyBuffer"
 SETUP = "setup"
 
@@ -36,7 +36,7 @@ class Event:
 
     @staticmethod
     def setup(layout: list[int]) -> "Event":
-        return Event(SETUP, dict(layout=layout))
+        return Event(SETUP, dict(bufferLayout=layout))
 
     def to_json(self) -> str:
         event = dict(eventType=self.eventType, data=self.data)
@@ -92,7 +92,9 @@ class UserConnection:
 
         if event.eventType == KEY_PRESSED:
             # add the event to the buffer, then broadcast to all
-            self.manager.buffers[self.team].append(event.data)
+            self.manager.buffers[self.team].append(
+                dict(key=event.data["value"],  userid=self.identity)
+            )
             await self.manager.broadcast_buffer(self.team)
         else:
             logger.error("Unknown event %s", event.eventType)
