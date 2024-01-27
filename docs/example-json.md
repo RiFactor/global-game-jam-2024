@@ -19,8 +19,8 @@
 {
     "eventType": "submissionState",
     "data" : {
-        "submisison" : "correct",
-        "state" : "<the state of the submission>"
+        "submisison" : "<the-word-generated-by-the-clients>",
+        "state" : "correct"
     }
 }
 ```
@@ -31,8 +31,8 @@
 {
     "eventType": "submissionState",
     "data" : {
-        "submisison" : "incorrect",
-        "state" : "<the state of the submission>"
+        "submisison" : "<the-word-generated-by-the-clients>",
+        "state" : "incorrect>"
     }
 }
 ```
