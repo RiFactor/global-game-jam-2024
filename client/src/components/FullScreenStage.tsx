@@ -4,7 +4,7 @@ import { ReactElement } from "react";
 function FullScreenStage(props: { children: ReactElement }) {
     const app = useApp();
     
-    return <Stage width={app.screen.width} height={app.screen.height} options={{ backgroundColor: 0xeef1f5 }}>
+    return <Stage width={app.screen.width} height={app.screen.height} options={{ backgroundColor: 0xdeeede }}>
         {props.children}
     </Stage>
 }
