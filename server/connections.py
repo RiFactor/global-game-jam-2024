@@ -1,9 +1,9 @@
-
-from fastapi import  WebSocket
+from fastapi import WebSocket
 import logging
 
 # prepend uvicorn so it all uses the same handler
 logger = logging.getLogger("uvicorn." + __name__)
+
 
 class UserConnection:
     def __init__(self, manager: "ConnectionManager", socket: WebSocket) -> None:
@@ -56,4 +56,3 @@ class ConnectionManager:
         """Broadcast to all users"""
         for _, user in self.usermap.items():
             await user.socket.send_text(message)
-

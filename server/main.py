@@ -12,7 +12,6 @@ logger.setLevel(logging.DEBUG)
 logger.info("Server starting...")
 
 
-
 app = FastAPI()
 
 # setup the manager to use throughout the application
@@ -33,4 +32,3 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         logger.info("%s disconnected", user.identity)
         manager.disconnect(user)
-
