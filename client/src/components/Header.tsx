@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 
 class UserData {
-    userid: Number;
-    constructor(userid: Number) {
-        this.userid = userid;
-    }
+  userid: Number;
+  constructor(userid: Number) {
+    this.userid = userid;
+  }
 }
 
 const Header = () => {
@@ -21,6 +21,7 @@ const Header = () => {
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
+    console.log(client_id);
     setWs(newWs);
     // return () => {
     //   newWs.close();
@@ -47,9 +48,9 @@ const Header = () => {
             message.appendChild(content_box1);
             messages?.appendChild(message);
 
-            if (event.data.submissionState == "correct") {
+            if (event.data.submissionState === "correct") {
               // level passed
-            }  else {
+            } else {
               // level not finished
             }
             break;
@@ -66,15 +67,21 @@ const Header = () => {
   }, [ws, user_data, client_id]);
 
   useEffect(() => {
-    document.addEventListener("keydown", (event: any) => {
-      const is_allowed = allowList.includes(event.key);
+    const handleKeyUp = (event: any) => {
+      const is_allowed = allowList.includes(event.key.toLowerCase());
       is_allowed ? console.log("send to server") : console.log("ignore");
       setString(event.key);
       if (is_allowed && ws) {
-          ws.send(sendKey(event.key));
+        ws.send(sendKey(event.key));
       }
-    });
-  }, [ws, allowList]);
+    };
+
+    document.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [ws]);
 
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -92,15 +99,9 @@ const Header = () => {
     return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
   }
 
-
   return (
     <div>
-      <div id="ws-id">{client_id}</div>
       <ul id="messages"></ul>
-      <form onSubmit={sendMessage}>
-        <input type="text" id="messageText" />
-        <button type="submit">Send</button>
-      </form>
     </div>
   );
 };
