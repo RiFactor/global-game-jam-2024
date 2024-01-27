@@ -36,7 +36,7 @@ const Header = () => {
 
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
-            content = document.createTextNode(event.data);
+            content = document.createTextNode(event.data.value);
             message.appendChild(content);
             messages?.appendChild(message);
             break
