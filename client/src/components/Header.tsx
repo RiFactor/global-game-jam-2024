@@ -43,7 +43,7 @@ const Header = () => {
             break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
-            console.log(event.data);
+            console.log(sendKey(event.data.value));
             let content_box = document.createTextNode(event.data.value);
             message.appendChild(content_box);
             messages?.appendChild(message);
@@ -59,7 +59,7 @@ const Header = () => {
       is_allowed ? console.log("send to server") : console.log("ignore");
       setString(event.key);
       if (is_allowed && ws) {
-          ws.send(`{"eventType":"keyPress", "data":{"value": "${event.key}"}}`);
+          ws.send(sendKey(event.key));
       }
     });
   }, [ws, allowList]);
@@ -70,11 +70,16 @@ const Header = () => {
 
     if (input && ws) {
       // pass the key to the server in json format
-      ws.send(`{"eventType":"keyPress", "data":{"value": "${input.value}"}}`);
+      ws.send(sendKey(input.value));
       // clear the input value
       input.value = "";
     }
   }
+
+  function sendKey(key: string) {
+    return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
+  }
+
 
   return (
     <div>
