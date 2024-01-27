@@ -25,4 +25,4 @@
   \_______________________________/  \___/
 
 ```
-[documentation](https://github.com/RiFactor/global-game-jam-2024/blob/main/docs/usage.md)
+[duckumentation](https://github.com/RiFactor/global-game-jam-2024/blob/main/docs/usage.md)
