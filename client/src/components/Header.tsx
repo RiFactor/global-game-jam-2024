@@ -5,9 +5,8 @@ const Header = () => {
   const [ws, setWs] = useState<WebSocket | null>(null);
 
   useEffect(() => {
-    const newWs = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+    const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
     setWs(newWs);
-
     return () => {
       newWs.close();
     };
