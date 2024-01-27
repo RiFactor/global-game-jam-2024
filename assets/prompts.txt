@@ -1,4 +1,3 @@
-word - prompt
 car - i am speed, ca chow
 code - compile this 
 pizza - did someone say dominos?
