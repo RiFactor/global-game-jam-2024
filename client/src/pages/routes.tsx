@@ -4,9 +4,9 @@ import ErrorPage from "./ErrorPage";
 import MainLayout from "../layouts/MainLayout";
 
 const router = createBrowserRouter([
-  { path: "", element: <Navigate to="/games" /> },
+  { path: "", element: <Navigate to="/game" /> },
   {
-    path: "/games",
+    path: "/game",
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
