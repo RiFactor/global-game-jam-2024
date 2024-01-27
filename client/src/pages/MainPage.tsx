@@ -119,7 +119,6 @@ const MainPage = () => {
       <div className="w-screen h-screen">
         <AppProvider value={pixiApp}>
           <FullScreenStage>
-            {/* <TeamDisplay /> */}
             <MainPageBackground />
             <AnswerLengthIndicator
               myUserId={myUserId}
@@ -129,6 +128,7 @@ const MainPage = () => {
               currentAnswer={leftAnswer}
               screenFractionOffset={0.1}
             />
+            <TeamDisplay />
             <AnswerLengthIndicator
               screenFraction={0.3}
               spacing={10}

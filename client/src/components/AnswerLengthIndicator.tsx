@@ -24,9 +24,9 @@ function AnswerLengthIndicator(props: AnswerLengthIndicatorProps) {
   const itemWidth = (containerWidth - (props.spacing * lineLength - 1)) / lineLength; // TODO: What do we do if this is negative?
 
   const lines: boolean[][] = [];
-  var currLine: boolean[] = [];
-  var currLen: number = 0;
-  var leadingSpace: number = 0;
+  let currLine: boolean[] = [];
+  let currLen: number = 0;
+  let leadingSpace: number = 0;
   props.wordLengths.forEach(length => {
     if (currLen + leadingSpace + length > lineLength) {
       lines.push(currLine);
@@ -46,10 +46,10 @@ function AnswerLengthIndicator(props: AnswerLengthIndicatorProps) {
   });
   lines.push(currLine);
 
-  var y = props.spacing;
+  let y = props.spacing;
   const positions = lines.flatMap(line => {
     const length = line.length;
-    var startX = (containerWidth - itemWidth * length - props.spacing * (length - 1)) / 2;
+    let startX = (containerWidth - itemWidth * length - props.spacing * (length - 1)) / 2;
     const returnVal: pos[] = [];
     line.forEach(visible => {
       if (visible) {
@@ -71,7 +71,7 @@ function AnswerLengthIndicator(props: AnswerLengthIndicatorProps) {
             width={itemWidth}
             x={pos.x}
             y={pos.y}
-            isYou={currentAnswer ? currentAnswer.userid == props.myUserId : false}
+            isYou={currentAnswer ? currentAnswer.userid === props.myUserId : false}
             character={currentAnswer ? currentAnswer.key : undefined}
           />
         );
