@@ -6,12 +6,12 @@ type pos = {
     y: number
 };
 
-function AnswerLengthIndicator(props: {screenFraction: number, spacing: number, wordLengths: number[]}) {
+function AnswerLengthIndicator(props: {screenFraction: number, screenFractionOffset: number, spacing: number, wordLengths: number[]}) {
     const app = useApp();
     const maxLength = Math.max(...props.wordLengths);
     const lineLength = Math.max(maxLength, 6);
     const containerWidth = app.screen.width * props.screenFraction;
-    const itemWidth = containerWidth - (props.spacing * lineLength - 1); // TODO: What do we do if this is negative?
+    const itemWidth = (containerWidth - (props.spacing * lineLength - 1)) / lineLength; // TODO: What do we do if this is negative?
 
     const lines: boolean[][] = [];
     var currLine: boolean[] = [];
@@ -24,16 +24,17 @@ function AnswerLengthIndicator(props: {screenFraction: number, spacing: number, 
             currLen = 0;
             leadingSpace = 0;
         } else {
-            Array(leadingSpace).forEach(element => {
+            for (let i=0; i<leadingSpace; i++) {
                 currLine.push(false);
-            });
+            }
         }
-        Array(length).forEach(() => {
+        for (let i=0; i<length; i++) {
             currLine.push(true);
-        });
+        }
         currLen += length;
         leadingSpace = 1;
     });
+    lines.push(currLine);
 
     var y = props.spacing;
     const positions = lines.flatMap((line) => {
@@ -44,16 +45,16 @@ function AnswerLengthIndicator(props: {screenFraction: number, spacing: number, 
             if (visible) {
                 returnVal.push({x: startX, y: y})
             }
-            startX += containerWidth + props.spacing;
+            startX += itemWidth + props.spacing;
         })
-        y += containerWidth + props.spacing;
+        y += itemWidth + props.spacing;
         return returnVal;
     });
 
-    return <Container width={containerWidth}>
+    return <Container width={containerWidth} position={[app.screen.width * props.screenFractionOffset, 0]}>
         {
            positions.map((pos) => {
-            return <SingleLetterIndicator width={containerWidth} x={pos.x} y={pos.y} />
+            return <SingleLetterIndicator width={itemWidth} x={pos.x} y={pos.y} />
            })
         }
     </Container>

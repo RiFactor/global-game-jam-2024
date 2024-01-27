@@ -15,8 +15,8 @@ const MainPage = () => {
       <NavBar />
       <AppProvider value={pixiApp}>
         <FullScreenStage>
+          <AnswerLengthIndicator screenFraction={0.7} spacing={10} wordLengths={[2,4,8]} screenFractionOffset={0.15} />
           <Container x={400} y={330} anchor={0.5}>
-            <AnswerLengthIndicator screenFraction={0.7} spacing={10} wordLengths={[1]} />
             <Text text="Hello World" anchor={{ x: 0.5, y: 0.5 }} />
           </Container>
         </FullScreenStage>
