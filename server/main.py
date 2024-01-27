@@ -25,6 +25,10 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     user = await manager.connect(websocket, client_id)
     logger.debug("New connection: %s", user.identity)
 
+    if manager.ready():
+        loop = asyncio.get_event_loop()
+        _ = loop.create_task(manager.start())
+
     try:
         while True:
             await user.comm_loop()

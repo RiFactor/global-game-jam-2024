@@ -99,6 +99,12 @@ class ConnectionManager:
         self.team = {1: [], 2: []}
         self.buffers: dict[int, list[dict]] = {1: [], 2:[]}
 
+    def ready(self) -> bool:
+        return len(self.usermap) == 4
+
+    async def start(self) -> None:
+        logger.info("Starting game")
+
     async def connect(self, websocket: WebSocket, client_id: int) -> UserConnection:
         await websocket.accept()
         # wrap new user connection
@@ -115,6 +121,7 @@ class ConnectionManager:
         # find what team / playernum they should be
         team, playernum = self._assign_team()
         user = UserConnection(self, websocket, client_id, team, playernum)
+        self.team[team].append(user.identity)
         logger.info(
             "Assigned %s to team %s as player %s", user.identity, team, playernum
         )
