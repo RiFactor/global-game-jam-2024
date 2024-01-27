@@ -19,6 +19,7 @@ const Header = () => {
         let message = document.createElement("li");
         
         switch (event.eventType) {
+
           // if gameState is recieved 
           case "submissionState":
             // print the submission to the screen
@@ -31,6 +32,14 @@ const Header = () => {
             }  else {
               // level not finished
             }
+            break
+
+          // if keyPress is recieved (we dont want to do anthing here?)
+          case "keyPress":
+            content = document.createTextNode(event.data);
+            message.appendChild(content);
+            messages?.appendChild(message);
+            break
         }
       };
     }
