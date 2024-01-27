@@ -20,7 +20,26 @@
 {
     "eventType": "keyPress",
     "data" : {
-        "value" : "a"
+        "value" : "a",
+        "userid": 1231231,
+        "team": 1
+    }
+}
+```
+
+## Server to client keys
+
+```json
+{
+    "eventType": "keyBuffer",
+    "data" : {
+        "team": 1,
+        "keys": [
+            {
+                "key": "a",
+                "userid": 1231231,
+            }
+        ]
     }
 }
 ```
