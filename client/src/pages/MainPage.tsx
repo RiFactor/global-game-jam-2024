@@ -2,12 +2,12 @@ import { AppProvider } from "@pixi/react";
 import { Application } from "pixi.js";
 import FullScreenStage from "../components/FullScreenStage";
 import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
-import Header from "../components/Header";
 import KeyPress from "../data/keyPress";
 import React, { useEffect, useState } from "react";
 import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 import UserData from "../data/UserData";
-import * as events from "../events"
+import * as events from "../events";
+import TeamDisplay from "../components/TeamDisplay";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -36,7 +36,6 @@ const rightAnswer: KeyPress[] = [
 const myUserId = 2;
 
 const MainPage = () => {
-
   // BED says which user / side of keyboard
   const playerOne = true;
   const [allowList, setAllowList] = useState(playerOne ? permittedKeysOne : permittedKeysTwo);
@@ -46,7 +45,8 @@ const MainPage = () => {
   const [user_data, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
-    const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
+    // const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
+    const newWs = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
     console.log(client_id);
     setWs(newWs);
     // return () => {
@@ -62,14 +62,14 @@ const MainPage = () => {
         let event = JSON.parse(content.data);
         switch (event.eventType) {
           case "teamAssignment":
-            events.teamAssignment(event, setUserData)
+            events.teamAssignment(event, setUserData);
             break;
           case "submissionState":
-            events.submissionState(event)
+            events.submissionState(event);
             break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
-            events.keyPress(event)
+            events.keyPress(event);
             break;
         }
       };
@@ -105,8 +105,8 @@ const MainPage = () => {
   }
 
   return (
-    <>
-      <Header />
+    <div className="flex flex-col items-center bg-slate-200">
+      <TeamDisplay />
       <AppProvider value={pixiApp}>
         <FullScreenStage>
           <AnswerLengthIndicator
@@ -126,7 +126,7 @@ const MainPage = () => {
           />
         </FullScreenStage>
       </AppProvider>
-    </>
+    </div>
   );
 };
 
