@@ -16,10 +16,10 @@ const Header = () => {
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
     setWs(newWs);
-    return () => {
-      newWs.close();
-    };
-  }, [client_id]);
+    // return () => {
+    //   newWs.close();
+    // };
+  }, []);
 
   useEffect(() => {
     if (ws) {
