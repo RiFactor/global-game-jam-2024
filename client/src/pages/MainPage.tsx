@@ -37,9 +37,6 @@ const MainPage = () => {
       <Header />
       <AppProvider value={pixiApp}>
         <FullScreenStage>
-          <Container x={400} y={330} anchor={0.5}>
-            <Text text="Hello World" anchor={{ x: 0.5, y: 0.5 }} />
-          </Container>
           <AnswerLengthIndicator
             myUserId={myUserId}
             screenFraction={0.3}
