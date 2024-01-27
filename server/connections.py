@@ -94,10 +94,11 @@ class UserConnection:
 
 
 class ConnectionManager:
-    def __init__(self):
+    def __init__(self, prompts: list[tuple[str, list[str]]]):
         self.usermap: dict[int, UserConnection] = {}
         self.team = {1: [], 2: []}
         self.buffers: dict[int, list[dict]] = {1: [], 2:[]}
+        self.prompts = prompts
 
     def ready(self) -> bool:
         return len(self.usermap) == 4
