@@ -25,13 +25,13 @@ function SingleLetterIndicator(props: {width: number, x: number, y: number, isYo
                 style={
                     props.isYou ? 
                         new TextStyle({
-                        fill: ['#aabbcc', '#7799aa'],
-                        stroke: '#336699',
+                        fill: ['#aaccbb', '#77aa99'],
+                        stroke: '#339966',
                         strokeThickness: 3
                         }) : 
                         new TextStyle({
-                        fill: ['#787878', '#454545'],
-                        stroke: '#232323',
+                        fill: ['#7878ef', '#4545bc'],
+                        stroke: '#232389',
                         strokeThickness: 3
                         })} />
         </Container> : undefined}
