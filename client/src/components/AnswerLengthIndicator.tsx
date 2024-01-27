@@ -7,7 +7,15 @@ type pos = {
     y: number
 };
 
-function AnswerLengthIndicator(props: {screenFraction: number, screenFractionOffset: number, spacing: number, wordLengths: number[], currentAnswer: KeyPress[]}) {
+type AnswerLengthIndicatorProps = {
+    screenFraction: number,
+    screenFractionOffset: number,
+    spacing: number,
+    wordLengths: number[],
+    currentAnswer: KeyPress[]
+}
+
+function AnswerLengthIndicator(props: AnswerLengthIndicatorProps) {
     const app = useApp();
     const maxLength = Math.max(...props.wordLengths);
     const lineLength = Math.max(maxLength, 6);
