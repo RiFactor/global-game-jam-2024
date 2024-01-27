@@ -1,13 +1,16 @@
 import UserData from "./data/UserData";
 import KeyBuffer from "./data/keyBuffer";
 import KeyPress from "./data/keyPress";
+import { permittedKeysOne, permittedKeysTwo } from "./constants/keyboard";
 
 export function sendKey(key: string) {
   return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
 }
 
-export function teamAssignment(event: any, setUserData: (data: UserData) => void) {
-    setUserData(event.data);
+export function teamAssignment(event: any, setUserData: (data: UserData) => void, setAllowList: (allowList: string[]) => void) {
+    const userData = event.data as UserData;
+    setUserData(userData);
+    setAllowList(userData.playernum === 1 ? permittedKeysOne : permittedKeysTwo)
 }
 
 export function submissionState(event: any) {

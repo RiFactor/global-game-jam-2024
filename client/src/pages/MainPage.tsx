@@ -5,7 +5,6 @@ import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
 import Header from "../components/Header";
 import KeyPress from "../data/keyPress";
 import React, { useEffect, useState } from "react";
-import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 import UserData from "../data/UserData";
 import * as events from "../events"
 
@@ -15,8 +14,7 @@ const pixiApp = new Application({ resizeTo: window });
 const MainPage = () => {
 
   // BED says which user / side of keyboard
-  const playerOne = true;
-  const [allowList, setAllowList] = useState(playerOne ? permittedKeysOne : permittedKeysTwo);
+  const [allowList, setAllowList] = useState([]);
 
   const client_id = Date.now();
   const [ws, setWs] = useState<WebSocket | null>(null);
@@ -42,7 +40,7 @@ const MainPage = () => {
         let event = JSON.parse(content.data);
         switch (event.eventType) {
           case "teamAssignment":
-            events.teamAssignment(event, setUserData)
+            events.teamAssignment(event, setUserData, setAllowList)
             break;
           case "submissionState":
             events.submissionState(event)
