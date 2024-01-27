@@ -13,7 +13,7 @@
 }
 ```
 
-## Server to Client successs
+## Server to Client success
     
 ```json
 {
