@@ -21,6 +21,7 @@ distribution = false
 [tool.pdm.scripts]
 fmt = "black server"
 serve = "uvicorn server.main:app"
+prod = "uvicorn server.main:app --host 0.0.0.0 --port 13121"
 debug = "uvicorn server.main:app --reload"
 
 [tool.pdm.dev-dependencies]

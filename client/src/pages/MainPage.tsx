@@ -2,52 +2,30 @@ import { AppProvider } from "@pixi/react";
 import { Application } from "pixi.js";
 import React, { useEffect, useState } from "react";
 import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
-import FullScreenStage from "../components/FullScreenStage";
-import MainPageBackground from "../components/MainPageBackground";
-import PromptList from "../components/PromptList";
-import TeamDisplay from "../components/TeamDisplay";
-import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
+import Header from "../components/Header";
+import KeyPress from "../data/keyPress";
+import React, { useEffect, useState } from "react";
 import UserData from "../data/UserData";
 import KeyPress from "../data/keyPress";
 import * as events from "../events";
+import FullScreenStage from "../components/FullScreenStage";
+import MainPageBackground from "../components/MainPageBackground";
+import TeamDisplay from "../components/TeamDisplay";
+import PromptList from "../components/PromptList";
 
 // TODO: is there a better way to do this than just declaring here?
-const pixiApp = new Application({
-  resizeTo: window
-  // transparent: true
-});
-
-// TODO test data, should be deleted
-const wordLengths = [2, 3, 4];
-const leftAnswer: KeyPress[] = [
-  { key: "i", userid: 1 },
-  { key: "m", userid: 1 },
-  { key: "t", userid: 2 },
-  { key: "h", userid: 1 },
-  { key: "e", userid: 2 },
-  { key: "b", userid: 1 },
-  { key: "s", userid: 2 },
-  { key: "o", userid: 1 },
-  { key: "s", userid: 2 }
-];
-const rightAnswer: KeyPress[] = [
-  { key: "m", userid: 1 },
-  { key: "i", userid: 1 },
-  { key: "h", userid: 1 },
-  { key: "t", userid: 1 }
-];
-
-// TODO this should take state that is currently in header; this needs refactoring in an upcoming PR
-const myUserId = 2;
+const pixiApp = new Application({ resizeTo: window });
 
 const MainPage = () => {
   // BED says which user / side of keyboard
-  const playerOne = true;
-  const [allowList, setAllowList] = useState(playerOne ? permittedKeysOne : permittedKeysTwo);
+  const [allowList, setAllowList] = useState<string[]>([]);
 
   const client_id = Date.now();
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [user_data, setUserData] = useState<UserData | null>(null);
+  const [ownAnswers, setOwnAnswers] = useState<KeyPress[]>([]);
+  const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
+  const [wordLengths, setWordLengths] = useState<number[]>([]);
 
   useEffect(() => {
     // const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -68,13 +46,28 @@ const MainPage = () => {
         switch (event.eventType) {
           case "teamAssignment":
             events.teamAssignment(event, setUserData);
+            events.teamAssignment(event, setUserData, setAllowList);
             break;
           case "submissionState":
             events.submissionState(event);
             break;
+          case "keyBuffer":
+            if (user_data) {
+              events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
+            }
+            break;
+          case "keyBuffer":
+            if (user_data) {
+              events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
+            }
+            break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
             events.keyPress(event);
+            events.keyPress(event);
+            break;
+          case "setup":
+            events.setup(event, setWordLengths);
             break;
         }
       };
@@ -95,7 +88,7 @@ const MainPage = () => {
     return () => {
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [ws]);
+  }, [ws, allowList]);
 
   // TODO is this needed?
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
@@ -121,11 +114,11 @@ const MainPage = () => {
           <FullScreenStage>
             <MainPageBackground />
             <AnswerLengthIndicator
-              myUserId={myUserId}
+              myUserId={user_data?.userid}
               screenFraction={0.3}
               spacing={10}
               wordLengths={wordLengths}
-              currentAnswer={leftAnswer}
+              currentAnswer={ownAnswers}
               screenFractionOffset={0.1}
             />
             <TeamDisplay />
@@ -133,7 +126,7 @@ const MainPage = () => {
               screenFraction={0.3}
               spacing={10}
               wordLengths={wordLengths}
-              currentAnswer={rightAnswer}
+              currentAnswer={enemyAnswers}
               screenFractionOffset={0.6}
             />
           </FullScreenStage>
