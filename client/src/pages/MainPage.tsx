@@ -50,14 +50,8 @@ const MainPage = () => {
               events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
             }
             break;
-          case "keyBuffer":
-            if (user_data) {
-              events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
-            }
-            break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
-            events.keyPress(event);
             events.keyPress(event);
             break;
           case "setup":
