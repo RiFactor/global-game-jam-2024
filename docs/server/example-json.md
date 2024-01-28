@@ -75,7 +75,7 @@ The `continued` flag indicates whether this should be added to the previous prom
 {
     "eventType": "submissionState",
     "data" : {
-        "submisison" : "<the-word-generated-by-the-clients>",
+        "submission" : "<the-word-generated-by-the-clients>",
         "state" : "correct"
     }
 }
@@ -87,7 +87,7 @@ The `continued` flag indicates whether this should be added to the previous prom
 {
     "eventType": "submissionState",
     "data" : {
-        "submisison" : "<the-word-generated-by-the-clients>",
+        "submission" : "<the-word-generated-by-the-clients>",
         "state" : "incorrect>"
     }
 }
