@@ -1,17 +1,16 @@
 import { AppProvider } from "@pixi/react";
 import { Application } from "pixi.js";
-import React, { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import FullScreenStage from "../components/FullScreenStage";
 import MainPageBackground from "../components/MainPageBackground";
 import PromptList from "../components/PromptList";
 import UserData from "../data/UserData";
 import KeyPress from "../data/keyPress";
 import * as events from "../events";
-import RoundState from "../gamestates/RoundState";
-import WaitingForPlayers from "../gamestates/WaitingForPlayers";
-import { WaitingForNextRound, WaitingForNextRoundProps } from "../gamestates/WaitingForNextRound";
 import GameState from "../gamestates/GameState";
-import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
+import RoundState from "../gamestates/RoundState";
+import { WaitingForNextRound, WaitingForNextRoundProps } from "../gamestates/WaitingForNextRound";
+import WaitingForPlayers from "../gamestates/WaitingForPlayers";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -22,7 +21,7 @@ const MainPage = () => {
 
   const client_id = Date.now();
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const [user_data, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [ownAnswers, setOwnAnswers] = useState<KeyPress[]>([]);
   const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
   const [wordLengths, setWordLengths] = useState<number[]>([]);
@@ -53,28 +52,29 @@ const MainPage = () => {
             events.submissionState(event);
             break;
           case "keyBuffer":
-            if (user_data) {
-              events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
+            if (userData) {
+              events.keyBuffer(event, userData.team, setOwnAnswers, setEnemyAnswers);
             }
             break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
             events.keyPress(event);
             break;
-          case "prompt":
+          case "prompt": {
             let promptsCopy = event.data?.continued === 0 ? [] : [...prompts];
             setPrompts([event.data.prompt, ...promptsCopy]);
             break;
+          }
           case "setup":
             events.setup(event, setGameState, setWordLengths, setOwnAnswers, setEnemyAnswers);
             break;
           case "roundOver":
-            events.roundOver(event, user_data ? user_data.team : -1, setGameState, setWinState);
+            events.roundOver(event, userData ? userData.team : -1, setGameState, setWinState);
             break;
         }
       };
     }
-  }, [ws, user_data, client_id]);
+  }, [ws, userData, client_id]);
 
   useEffect(() => {
     const handleKeyUp = (event: any) => {
@@ -92,19 +92,6 @@ const MainPage = () => {
     };
   }, [ws, allowList, gameState]);
 
-  // TODO is this needed?
-  function sendMessage(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const input = document.getElementById("messageText") as HTMLInputElement;
-
-    if (input && ws) {
-      // pass the key to the server in json format
-      ws.send(events.sendKey(input.value));
-      // clear the input value
-      input.value = "";
-    }
-  }
-
   var gameStateUi: ReactElement;
   switch (gameState) {
     case GameState.WaitingForPlayers:
@@ -114,7 +101,7 @@ const MainPage = () => {
       gameStateUi = (
         <RoundState
           wordLengths={wordLengths}
-          userId={user_data?.userid}
+          userId={userData?.userid}
           ownAnswers={ownAnswers}
           enemyAnswers={enemyAnswers}
         />
