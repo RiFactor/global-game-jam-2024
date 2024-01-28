@@ -127,7 +127,7 @@ const MainPage = () => {
 
   return (
     <div className="flex flex-col items-center bg-orange-300 w-full h-full">
-      <div className="flex w-full h-full flex-col relative">
+      <div className="flex w-full h-full flex-col relativ items-center">
         <div>
           <AppProvider value={pixiApp}>
             <FullScreenStage>
