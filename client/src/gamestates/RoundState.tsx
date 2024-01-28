@@ -1,8 +1,10 @@
 import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
+import TeamAndSideIndicator from "../components/TeamAndSideIndicator";
+import UserData from "../data/UserData";
 import KeyPress from "../data/keyPress";
 
 type RoundStateProps = {
-    userId?: number,
+    userData?: UserData | null,
     wordLengths: number[],
     ownAnswers: KeyPress[],
     enemyAnswers: KeyPress[]
@@ -11,7 +13,7 @@ type RoundStateProps = {
 function RoundState(props: RoundStateProps) {
     return <>
         <AnswerLengthIndicator
-            myUserId={props.userId}
+            myUserId={props.userData?.userid}
             screenFraction={0.3}
             spacing={10}
             wordLengths={props.wordLengths}
@@ -24,6 +26,10 @@ function RoundState(props: RoundStateProps) {
             wordLengths={props.wordLengths}
             currentAnswer={props.enemyAnswers}
             screenFractionOffset={0.6}
+        />
+        <TeamAndSideIndicator
+            teamId={props.userData ? props.userData.team : -1}
+            side={props.userData ? props.userData.playernum : -1}
         />
     </>
 }
