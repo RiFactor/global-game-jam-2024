@@ -29,6 +29,7 @@ const MainPage = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.WaitingForPlayers);
   const [winState, setWinState] = useState<WaitingForNextRoundProps>({ winner: false, winningText: "" });
   const [prompts, setPrompts] = useState<string[]>([]);
+  const [submissions, setSubmissions] = useState<string[]>([]);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -49,17 +50,13 @@ const MainPage = () => {
           case "teamAssignment":
             events.teamAssignment(event, setUserData, setAllowList);
             break;
-          case "submissionState":
-            events.submissionState(event);
+          case "submission":
+            events.submission(event, submissions, setSubmissions);
             break;
           case "keyBuffer":
             if (user_data) {
               events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
             }
-            break;
-          // if keyPress is recieved (we dont want to do anthing here?)
-          case "keyPress":
-            events.keyPress(event);
             break;
           case "prompt":
             let promptsCopy = event.data?.continued === 0 ? [] : [...prompts];
@@ -91,19 +88,6 @@ const MainPage = () => {
       document.removeEventListener("keyup", handleKeyUp);
     };
   }, [ws, allowList, gameState]);
-
-  // TODO is this needed?
-  function sendMessage(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const input = document.getElementById("messageText") as HTMLInputElement;
-
-    if (input && ws) {
-      // pass the key to the server in json format
-      ws.send(events.sendKey(input.value));
-      // clear the input value
-      input.value = "";
-    }
-  }
 
   var gameStateUi: ReactElement;
   switch (gameState) {
