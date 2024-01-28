@@ -3,12 +3,12 @@ import Correet from "../assets/correet.jpeg";
 import TooSlow from "../assets/too-slow.jpeg";
 import { TextStyle } from "pixi.js";
 
-type WaitingForNextRoundProps = {
+export type WaitingForNextRoundProps = {
     winner: boolean,
     winningText: string
 }
 
-function WaitingForNextRound(props: WaitingForNextRoundProps) {
+export function WaitingForNextRound(props: WaitingForNextRoundProps) {
     const app = useApp();
     return <>
         <Sprite
@@ -50,5 +50,3 @@ function WaitingForNextRound(props: WaitingForNextRoundProps) {
         />
     </>;
 }
-
-export default WaitingForNextRound;

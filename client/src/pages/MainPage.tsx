@@ -9,7 +9,7 @@ import KeyPress from "../data/keyPress";
 import * as events from "../events";
 import RoundState from "../gamestates/RoundState";
 import WaitingForPlayers from "../gamestates/WaitingForPlayers";
-import WaitingForNextRound from "../gamestates/WaitingForNextRound";
+import { WaitingForNextRound, WaitingForNextRoundProps } from "../gamestates/WaitingForNextRound";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -31,6 +31,7 @@ const MainPage = () => {
   const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
   const [wordLengths, setWordLengths] = useState<number[]>([]);
   const [gameState, setGameState] = useState<GameState>(GameState.WaitingForPlayers);
+  const [winState, setWinState] = useState<WaitingForNextRoundProps>({winner: false, winningText: ""})
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -120,12 +121,7 @@ const MainPage = () => {
       />
       break;
     case GameState.WaitingForNextRound:
-      gameStateUi = <RoundState
-        wordLengths={wordLengths}
-        userId={user_data?.userid}
-        ownAnswers={ownAnswers}
-        enemyAnswers={enemyAnswers}
-      />
+      gameStateUi = <WaitingForNextRound {...winState}/>
       break;
   }
 
