@@ -1,6 +1,6 @@
 import { Sprite, Text, useApp } from "@pixi/react";
-import Correet from "../assets/correet.jpeg";
-import TooSlow from "../assets/too-slow.jpeg";
+import Correet from "../assets/correet.png";
+import TooSlow from "../assets/too-slow.png";
 import { TextStyle } from "pixi.js";
 
 export type WaitingForNextRoundProps = {
