@@ -4,8 +4,8 @@ import KeyPress from "./data/keyPress";
 import { permittedKeysOne, permittedKeysTwo } from "./constants/keyboard";
 import GameState from "./gamestates/GameState";
 import { WaitingForNextRoundProps } from "./gamestates/WaitingForNextRound";
-import RoundOver from "./data/roundOver";
 import { SetStateAction } from "react";
+import RoundOver from "./data/roundOver";
 import Submission from "./data/submission";
 
 export function sendKey(key: string) {
@@ -25,11 +25,11 @@ export function teamAssignment(
 
 export function submission(
   event: any,
-  currentSubmissions: string[], 
+  currentSubmissions: string[],
   setSubmissions: (update: SetStateAction<string[]>) => void
 ) {
-  const newSubmission = event.data as Submission
-  setSubmissions([...currentSubmissions, newSubmission.submission])
+  const newSubmission = event.data as Submission;
+  setSubmissions([...currentSubmissions, newSubmission.submission]);
 }
 
 export function keyBuffer(
