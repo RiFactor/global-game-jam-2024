@@ -8,6 +8,7 @@ import UserData from "../data/UserData";
 import KeyPress from "../data/keyPress";
 import * as events from "../events";
 import RoundState from "../gamestates/RoundState";
+import WaitingForPlayers from "../gamestates/WaitingForPlayers";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -107,12 +108,7 @@ const MainPage = () => {
   var gameStateUi: ReactElement;
   switch (gameState) {
     case GameState.WaitingForPlayers:
-      gameStateUi = <RoundState
-        wordLengths={wordLengths}
-        userId={user_data?.userid}
-        ownAnswers={ownAnswers}
-        enemyAnswers={enemyAnswers}
-      />
+      gameStateUi = <WaitingForPlayers />
       break;
     case GameState.PlayingRound:
       gameStateUi = <RoundState
