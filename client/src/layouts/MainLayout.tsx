@@ -1,13 +1,12 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
-import RealHeader from "../components/RealHeader";
+import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 
 const MainLayout = () => {
   return (
-    <div>
-      <RealHeader />
-      <NavBar />
+    <div className="flex flex-col w-screen h-screen bg-black">
+      {/* <Header /> */}
+      {/* <NavBar /> */}
       <Outlet />
     </div>
   );
