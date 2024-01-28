@@ -34,3 +34,5 @@ function TeamAndSideIndicator(props: IProps) {
         y={app.screen.height * 0.1}
         image={image} /> : undefined;
 }
+
+export default TeamAndSideIndicator;
