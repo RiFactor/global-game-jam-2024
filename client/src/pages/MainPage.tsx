@@ -26,7 +26,8 @@ const MainPage = () => {
   const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
   const [wordLengths, setWordLengths] = useState<number[]>([]);
   const [gameState, setGameState] = useState<GameState>(GameState.WaitingForPlayers);
-  const [winState, setWinState] = useState<WaitingForNextRoundProps>({winner: false, winningText: ""})
+  const [winState, setWinState] = useState<WaitingForNextRoundProps>({ winner: false, winningText: "" });
+  const [prompts, setPrompts] = useState<string[]>([]);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -55,15 +56,13 @@ const MainPage = () => {
               events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
             }
             break;
-          case "keyBuffer":
-            if (user_data) {
-              events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
-            }
-            break;
           // if keyPress is recieved (we dont want to do anthing here?)
           case "keyPress":
             events.keyPress(event);
-            events.keyPress(event);
+            break;
+          case "prompt":
+            let promptsCopy = event.data?.continued === 0 ? [] : [...prompts];
+            setPrompts([event.data.prompt, ...promptsCopy]);
             break;
           case "setup":
             events.setup(event, setGameState, setWordLengths, setOwnAnswers, setEnemyAnswers);
@@ -108,18 +107,20 @@ const MainPage = () => {
   var gameStateUi: ReactElement;
   switch (gameState) {
     case GameState.WaitingForPlayers:
-      gameStateUi = <WaitingForPlayers />
+      gameStateUi = <WaitingForPlayers />;
       break;
     case GameState.PlayingRound:
-      gameStateUi = <RoundState
-        wordLengths={wordLengths}
-        userId={user_data?.userid}
-        ownAnswers={ownAnswers}
-        enemyAnswers={enemyAnswers}
-      />
+      gameStateUi = (
+        <RoundState
+          wordLengths={wordLengths}
+          userId={user_data?.userid}
+          ownAnswers={ownAnswers}
+          enemyAnswers={enemyAnswers}
+        />
+      );
       break;
     case GameState.WaitingForNextRound:
-      gameStateUi = <WaitingForNextRound {...winState}/>
+      gameStateUi = <WaitingForNextRound {...winState} />;
       break;
   }
 
@@ -132,7 +133,7 @@ const MainPage = () => {
             {gameStateUi}
           </FullScreenStage>
         </AppProvider>
-        <PromptList />
+        <PromptList prompts={prompts} />
       </div>
     </div>
   );
