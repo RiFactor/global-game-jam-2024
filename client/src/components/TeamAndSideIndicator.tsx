@@ -32,7 +32,7 @@ function TeamAndSideIndicator(props: IProps) {
         height={app.screen.width * 0.16}
         x={app.screen.width * 0.42}
         y={app.screen.height * 0.1}
-        image={image} /> : undefined;
+        image={image} /> : <></>;
 }
 
 export default TeamAndSideIndicator;
