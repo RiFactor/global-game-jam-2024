@@ -91,11 +91,21 @@ class UserConnection:
         logger.info("%s event from %s", event.eventType, self.identity)
 
         if event.eventType == KEY_PRESSED:
-            # add the event to the buffer, then broadcast to all
-            self.manager.buffers[self.team].append(
-                dict(key=event.data["value"],  userid=self.identity)
-            )
-            await self.manager.broadcast_buffer(self.team)
+            # is there space in the buffer
+            if self.manager.current_prompt:
+                if len(self.manager.buffers[self.team]) >= len(self.manager.current_prompt[0]):
+                    # clear the buffer
+                    logger.debug("Clearing team %s buffer", self.team)
+                    self.manager.buffers[self.team].clear()
+                else:
+                    # add the event to the buffer, then broadcast to all
+                    self.manager.buffers[self.team].append(
+                        dict(key=event.data["value"],  userid=self.identity)
+                    )
+                await self.manager.broadcast_buffer(self.team)
+            else:
+                # no further processing whilst there is no prompt
+                return
         else:
             logger.error("Unknown event %s", event.eventType)
             raise Exception("Unknown event type")
@@ -107,6 +117,7 @@ class ConnectionManager:
         self.team = {1: [], 2: []}
         self.buffers: dict[int, list[dict]] = {1: [], 2: []}
         self.prompts = prompts
+        self.current_prompt : tuple[str, list[str]] | None = None
 
     def ready(self) -> bool:
         return len(self.usermap) == 4
@@ -114,8 +125,8 @@ class ConnectionManager:
     async def start(self) -> None:
         logger.info("Starting game")
 
-        prompt = random.choice(self.prompts)
-        key, hints = prompt[0], prompt[1:]
+        self.current_prompt = random.choice(self.prompts)
+        key, hints = self.current_prompt[0], self.current_prompt[1:]
 
         layout = [len(key)]
         await self.broadcast(Event.setup(layout).to_json())
