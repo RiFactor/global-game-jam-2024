@@ -28,6 +28,7 @@ const MainPage = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.WaitingForPlayers);
   const [winState, setWinState] = useState<WaitingForNextRoundProps>({ winner: false, winningText: "" });
   const [prompts, setPrompts] = useState<string[]>([]);
+  const [submissions, setSubmissions] = useState<string[]>([]);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -48,17 +49,13 @@ const MainPage = () => {
           case "teamAssignment":
             events.teamAssignment(event, setUserData, setAllowList);
             break;
-          case "submissionState":
-            events.submissionState(event);
+          case "submission":
+            events.submission(event, submissions, setSubmissions);
             break;
           case "keyBuffer":
             if (userData) {
               events.keyBuffer(event, userData.team, setOwnAnswers, setEnemyAnswers);
             }
-            break;
-          // if keyPress is recieved (we dont want to do anthing here?)
-          case "keyPress":
-            events.keyPress(event);
             break;
           case "prompt": {
             let promptsCopy = event.data?.continued === 0 ? [] : [...prompts];

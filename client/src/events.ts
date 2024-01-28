@@ -5,6 +5,8 @@ import { permittedKeysOne, permittedKeysTwo } from "./constants/keyboard";
 import GameState from "./gamestates/GameState";
 import { WaitingForNextRoundProps } from "./gamestates/WaitingForNextRound";
 import RoundOver from "./data/roundOver";
+import { SetStateAction } from "react";
+import Submission from "./data/submission";
 
 export function sendKey(key: string) {
   return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
@@ -21,28 +23,13 @@ export function teamAssignment(
   setAllowList(allowed_list);
 }
 
-export function submissionState(event: any) {
-  let messages = document.getElementById("messages");
-  let message = document.createElement("li");
-  // print the submission to the screen
-  let content_box1 = document.createTextNode(event.data.submission);
-  message.appendChild(content_box1);
-  messages?.appendChild(message);
-
-  if (event.data.submissionState === "correct") {
-    // level passed
-  } else {
-    // level not finished
-  }
-}
-
-export function keyPress(event: any) {
-  let messages = document.getElementById("messages");
-  let message = document.createElement("li");
-  console.log(sendKey(event.data.value));
-  let content_box = document.createTextNode(event.data.value);
-  message.appendChild(content_box);
-  messages?.appendChild(message);
+export function submission(
+  event: any,
+  currentSubmissions: string[], 
+  setSubmissions: (update: SetStateAction<string[]>) => void
+) {
+  const newSubmission = event.data as Submission
+  setSubmissions([...currentSubmissions, newSubmission.submission])
 }
 
 export function keyBuffer(
