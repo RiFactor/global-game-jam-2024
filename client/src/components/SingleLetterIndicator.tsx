@@ -24,13 +24,17 @@ function SingleLetterIndicator(props: {width: number, x: number, y: number, isYo
                 x={props.width / 2}
                 y={props.width / 2}
                 style={
-                    props.isYou ? 
+                    props.isYou ?
                         new TextStyle({
+                        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+                        fontSize: 50,
                         fill: ['#aaccbb', '#77aa99'],
                         stroke: '#339966',
                         strokeThickness: 3
-                        }) : 
+                        }) :
                         new TextStyle({
+                        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+                        fontSize: 50,
                         fill: ['#7878ef', '#4545bc'],
                         stroke: '#232389',
                         strokeThickness: 3
