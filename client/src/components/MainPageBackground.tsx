@@ -1,5 +1,5 @@
 import { Sprite, useApp } from "@pixi/react";
-import MoonStation from "../assets/moon-station.jpeg";
+import MoonStation from "../assets/moon-station.webp";
 
 const MainPageBackground = () => {
   const app = useApp();
