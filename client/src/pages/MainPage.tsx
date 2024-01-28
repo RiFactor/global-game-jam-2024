@@ -11,6 +11,7 @@ import RoundState from "../gamestates/RoundState";
 import WaitingForPlayers from "../gamestates/WaitingForPlayers";
 import { WaitingForNextRound, WaitingForNextRoundProps } from "../gamestates/WaitingForNextRound";
 import GameState from "../gamestates/GameState";
+import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -126,13 +127,15 @@ const MainPage = () => {
 
   return (
     <div className="flex flex-col items-center bg-orange-300 w-full h-full">
-      <div className="w-full h-full flex relative">
-        <AppProvider value={pixiApp}>
-          <FullScreenStage>
-            <MainPageBackground />
-            {gameStateUi}
-          </FullScreenStage>
-        </AppProvider>
+      <div className="flex w-full h-full flex-col relative">
+        <div>
+          <AppProvider value={pixiApp}>
+            <FullScreenStage>
+              <MainPageBackground />
+              {gameStateUi}
+            </FullScreenStage>
+          </AppProvider>
+        </div>
         <PromptList prompts={prompts} />
       </div>
     </div>
