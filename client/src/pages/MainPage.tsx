@@ -121,7 +121,7 @@ const MainPage = () => {
             </FullScreenStage>
           </AppProvider>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-4 flex-grow">
           <DisplayAnswers submissions={submissions} />
           <PromptList prompts={prompts} />
         </div>
