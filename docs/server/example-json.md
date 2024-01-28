@@ -71,24 +71,30 @@ The `continued` flag indicates whether this should be added to the previous prom
 
 ## Server to Client success
 
+Correct is 1 when the submission is correct, else 0.
+
 ```json
 {
-    "eventType": "submissionState",
+    "eventType": "submission",
     "data" : {
-        "submisison" : "<the-word-generated-by-the-clients>",
-        "state" : "correct"
+        "team": 1,
+        "submission" : "elkasdjlk",
+        "correct" : 0
     }
 }
 ```
 
-## Server to Client failure
+When the round is over, servers send a finalized event
+
 
 ```json
 {
-    "eventType": "submissionState",
+    "eventType": "roundOver",
     "data" : {
-        "submisison" : "<the-word-generated-by-the-clients>",
-        "state" : "incorrect>"
+        "winningTeam": 1,
+        "winningWord": "Something",
+        "team1score": 1,
+        "team2score": 0
     }
 }
 ```
