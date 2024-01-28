@@ -29,7 +29,7 @@ export function submission(
   setSubmissions: (update: SetStateAction<string[]>) => void
 ) {
   const newSubmission = event.data as Submission;
-  setSubmissions([...currentSubmissions, newSubmission.submission]);
+  setSubmissions([newSubmission.submission, ...currentSubmissions]);
 }
 
 export function keyBuffer(
