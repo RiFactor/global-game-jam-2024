@@ -22,6 +22,7 @@ const MainPage = () => {
   const [ownAnswers, setOwnAnswers] = useState<KeyPress[]>([]);
   const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
   const [wordLengths, setWordLengths] = useState<number[]>([]);
+  const [prompts, setPrompts] = useState<string[]>([]);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -54,6 +55,10 @@ const MainPage = () => {
           case "keyPress":
             events.keyPress(event);
             break;
+          case "prompt":
+            let promptsCopy = event.data?.continued === 0 ? [] : [...prompts];
+            setPrompts([event.data.prompt, ...promptsCopy]);
+            break;
           case "setup":
             events.setup(event, setWordLengths);
             break;
@@ -78,19 +83,6 @@ const MainPage = () => {
     };
   }, [ws, allowList]);
 
-  // TODO is this needed?
-  function sendMessage(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const input = document.getElementById("messageText") as HTMLInputElement;
-
-    if (input && ws) {
-      // pass the key to the server in json format
-      ws.send(events.sendKey(input.value));
-      // clear the input value
-      input.value = "";
-    }
-  }
-
   return (
     <div className="flex flex-col items-center bg-orange-300 w-full h-full">
       <div className="w-full h-full flex relative">
@@ -114,7 +106,7 @@ const MainPage = () => {
             />
           </FullScreenStage>
         </AppProvider>
-        <PromptList />
+        <PromptList prompts={prompts} />
       </div>
     </div>
   );
