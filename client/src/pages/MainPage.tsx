@@ -1,6 +1,6 @@
 import { AppProvider } from "@pixi/react";
 import { Application } from "pixi.js";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import FullScreenStage from "../components/FullScreenStage";
 import MainPageBackground from "../components/MainPageBackground";
 import PromptList from "../components/PromptList";
@@ -12,6 +12,12 @@ import RoundState from "../gamestates/RoundState";
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
 
+enum GameState {
+  WaitingForPlayers,
+  PlayingRound,
+  WaitingForNextRound
+}
+
 const MainPage = () => {
   // BED says which user / side of keyboard
   const [allowList, setAllowList] = useState<string[]>([]);
@@ -22,6 +28,7 @@ const MainPage = () => {
   const [ownAnswers, setOwnAnswers] = useState<KeyPress[]>([]);
   const [enemyAnswers, setEnemyAnswers] = useState<KeyPress[]>([]);
   const [wordLengths, setWordLengths] = useState<number[]>([]);
+  const [gameState, setGameState] = useState<GameState>(GameState.WaitingForPlayers);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -97,6 +104,34 @@ const MainPage = () => {
     }
   }
 
+  var gameStateUi: ReactElement;
+  switch (gameState) {
+    case GameState.WaitingForPlayers:
+      gameStateUi = <RoundState
+        wordLengths={wordLengths}
+        userId={user_data?.userid}
+        ownAnswers={ownAnswers}
+        enemyAnswers={enemyAnswers}
+      />
+      break;
+    case GameState.PlayingRound:
+      gameStateUi = <RoundState
+        wordLengths={wordLengths}
+        userId={user_data?.userid}
+        ownAnswers={ownAnswers}
+        enemyAnswers={enemyAnswers}
+      />
+      break;
+    case GameState.WaitingForNextRound:
+      gameStateUi = <RoundState
+        wordLengths={wordLengths}
+        userId={user_data?.userid}
+        ownAnswers={ownAnswers}
+        enemyAnswers={enemyAnswers}
+      />
+      break;
+  }
+
   return (
     <div
       className="flex flex-col items-center bg-orange-300 w-full h-full"
@@ -107,12 +142,7 @@ const MainPage = () => {
         <AppProvider value={pixiApp}>
           <FullScreenStage>
             <MainPageBackground />
-            <RoundState
-              wordLengths={wordLengths}
-              userId={user_data?.userid}
-              ownAnswers={ownAnswers}
-              enemyAnswers={enemyAnswers}
-            />
+            {gameStateUi}
           </FullScreenStage>
         </AppProvider>
         <PromptList />
