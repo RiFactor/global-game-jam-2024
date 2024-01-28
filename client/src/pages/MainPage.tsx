@@ -2,16 +2,13 @@ import { AppProvider } from "@pixi/react";
 import { Application } from "pixi.js";
 import React, { useEffect, useState } from "react";
 import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
-import Header from "../components/Header";
-import KeyPress from "../data/keyPress";
-import React, { useEffect, useState } from "react";
+import FullScreenStage from "../components/FullScreenStage";
+import MainPageBackground from "../components/MainPageBackground";
+import PromptList from "../components/PromptList";
+import TeamDisplay from "../components/TeamDisplay";
 import UserData from "../data/UserData";
 import KeyPress from "../data/keyPress";
 import * as events from "../events";
-import FullScreenStage from "../components/FullScreenStage";
-import MainPageBackground from "../components/MainPageBackground";
-import TeamDisplay from "../components/TeamDisplay";
-import PromptList from "../components/PromptList";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -45,7 +42,6 @@ const MainPage = () => {
         let event = JSON.parse(content.data);
         switch (event.eventType) {
           case "teamAssignment":
-            events.teamAssignment(event, setUserData);
             events.teamAssignment(event, setUserData, setAllowList);
             break;
           case "submissionState":
