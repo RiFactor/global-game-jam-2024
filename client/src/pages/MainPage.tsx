@@ -5,7 +5,6 @@ import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
 import FullScreenStage from "../components/FullScreenStage";
 import MainPageBackground from "../components/MainPageBackground";
 import PromptList from "../components/PromptList";
-import TeamDisplay from "../components/TeamDisplay";
 import UserData from "../data/UserData";
 import KeyPress from "../data/keyPress";
 import * as events from "../events";
@@ -25,8 +24,7 @@ const MainPage = () => {
   const [wordLengths, setWordLengths] = useState<number[]>([]);
 
   useEffect(() => {
-    // const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
-    const newWs = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+    const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
     console.log(client_id);
     setWs(newWs);
     // return () => {
@@ -117,7 +115,6 @@ const MainPage = () => {
               currentAnswer={ownAnswers}
               screenFractionOffset={0.1}
             />
-            <TeamDisplay />
             <AnswerLengthIndicator
               screenFraction={0.3}
               spacing={10}
