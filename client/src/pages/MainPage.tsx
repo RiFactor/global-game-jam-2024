@@ -55,7 +55,7 @@ const MainPage = () => {
             events.keyPress(event);
             break;
           case "setup":
-            events.setup(event, setWordLengths);
+            events.setup(event, setWordLengths, setOwnAnswers, setEnemyAnswers);
             break;
         }
       };
