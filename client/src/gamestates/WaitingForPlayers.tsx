@@ -1,5 +1,5 @@
 import { Sprite, useApp } from "@pixi/react";
-import WaitingAsset from "../assets/waiting-for-players.jpeg";
+import WaitingAsset from "../assets/waiting-for-players.png";
 
 function WaitingForPlayers() {
     const app = useApp();
