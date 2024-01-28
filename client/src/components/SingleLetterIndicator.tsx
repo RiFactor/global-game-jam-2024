@@ -6,6 +6,7 @@ function SingleLetterIndicator(props: {width: number, x: number, y: number, isYo
     const draw = useCallback((g: _ReactPixi.IGraphics) => {
         g.clear!();
         g.beginFill!(0xffffff, 1);
+        g.lineStyle!(2, 0x0000ff, 1);
         g.drawRoundedRect!(0, 0, props.width, props.width, 10);
         g.endFill!();
     }, [props.width])
@@ -23,13 +24,17 @@ function SingleLetterIndicator(props: {width: number, x: number, y: number, isYo
                 x={props.width / 2}
                 y={props.width / 2}
                 style={
-                    props.isYou ? 
+                    props.isYou ?
                         new TextStyle({
+                        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+                        fontSize: 50,
                         fill: ['#aaccbb', '#77aa99'],
                         stroke: '#339966',
                         strokeThickness: 3
-                        }) : 
+                        }) :
                         new TextStyle({
+                        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+                        fontSize: 50,
                         fill: ['#7878ef', '#4545bc'],
                         stroke: '#232389',
                         strokeThickness: 3
