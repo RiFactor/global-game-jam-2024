@@ -62,7 +62,7 @@ function AnswerLengthIndicator(props: AnswerLengthIndicatorProps) {
   });
 
   return (
-    <Container width={containerWidth} position={[app.screen.width * props.screenFractionOffset, 0]}>
+    <Container width={containerWidth} position={[app.screen.width * props.screenFractionOffset, app.screen.height * 0.3]}>
       {positions.map((pos, index) => {
         const currentAnswer = props.currentAnswer[index];
         return (
