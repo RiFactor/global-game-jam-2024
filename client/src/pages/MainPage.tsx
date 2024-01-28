@@ -11,7 +11,6 @@ import RoundState from "../gamestates/RoundState";
 import WaitingForPlayers from "../gamestates/WaitingForPlayers";
 import { WaitingForNextRound, WaitingForNextRoundProps } from "../gamestates/WaitingForNextRound";
 import GameState from "../gamestates/GameState";
-import Submission from "../data/submission";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
