@@ -171,16 +171,17 @@ class ConnectionManager:
         layout = [len(i) for i in key.split(" ")]
 
         await self.broadcast(Event.setup(layout).to_json())
-        await self._recursive_send_hints(False, hints)
+        await self._recursive_send_hints(False, hints, 1, len(hints))
 
 
-    async def _recursive_send_hints(self, cont: bool, hints: list[str]) -> None:
+    async def _recursive_send_hints(self, cont: bool, hints: list[str], count: int, total_number: int) -> None:
+        logger.info("Sending hint %s of %s", count, total_number)
         await self.broadcast(Event.send_hint(cont, hints[0]).to_json())
 
         # queue up the next hint if there is one
         if len(hints) > 1:
             await asyncio.sleep(PROMPT_TIME_WAIT)
-            await self._recursive_send_hints(True, hints[1:])
+            await self._recursive_send_hints(True, hints[1:], count + 1, total_number)
 
     def get_key(self) -> str:
         if self.current_prompt:
