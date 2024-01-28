@@ -6,12 +6,12 @@ function SingleLetterIndicator(props: {width: number, x: number, y: number, isYo
     const draw = useCallback((g: _ReactPixi.IGraphics) => {
         g.clear!();
         g.beginFill!(0xffffff, 1);
-        g.drawRoundedRect!(props.x, props.y, props.width, props.width, 10);
+        g.drawRoundedRect!(0, 0, props.width, props.width, 10);
         g.endFill!();
-    }, [])
+    }, [props.width])
 
     return <>
-        <Graphics draw={draw} />
+        <Graphics draw={draw} x={props.x} y={props.y} />
         {props.character ? <Container
             x={props.x}
             y={props.y}
