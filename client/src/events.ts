@@ -36,15 +36,6 @@ export function submissionState(event: any) {
   }
 }
 
-export function keyPress(event: any) {
-  let messages = document.getElementById("messages");
-  let message = document.createElement("li");
-  console.log(sendKey(event.data.value));
-  let content_box = document.createTextNode(event.data.value);
-  message.appendChild(content_box);
-  messages?.appendChild(message);
-}
-
 export function keyBuffer(
   event: any,
   myTeamId: number,

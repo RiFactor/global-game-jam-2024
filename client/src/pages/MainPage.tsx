@@ -56,10 +56,6 @@ const MainPage = () => {
               events.keyBuffer(event, user_data.team, setOwnAnswers, setEnemyAnswers);
             }
             break;
-          // if keyPress is recieved (we dont want to do anthing here?)
-          case "keyPress":
-            events.keyPress(event);
-            break;
           case "prompt":
             let promptsCopy = event.data?.continued === 0 ? [] : [...prompts];
             setPrompts([event.data.prompt, ...promptsCopy]);
