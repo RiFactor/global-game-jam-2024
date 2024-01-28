@@ -122,7 +122,7 @@ class UserConnection:
                 # if the buffers are now the same length
                 if len(self.manager.buffers[self.team]) == prompt_length:
                     word = self.manager.get_submission(self.team)
-                    if word.lower() == self.manager.current_prompt[0].lower():
+                    if word.lower() == self.manager.get_key():
                         logger.info("Team %s is correct", self.team)
                         await self.manager.announce_winner(self.team, word)
                     else:
@@ -156,12 +156,18 @@ class ConnectionManager:
         key, hints = self.current_prompt[0], self.current_prompt[1:]
 
         logger.info("Prompt is: %s", key)
-
-        layout = [len(key)]
+        layout = [len(i) for i in key.split(" ")]
         await self.broadcast(Event.setup(layout).to_json())
 
         # todo: send the hints later
         _ = hints
+
+    def get_key(self) -> str:
+        if self.current_prompt:
+            key = self.current_prompt[0].replace(" ", "")
+            return key.lower()
+        raise Exception("No prompt")
+
 
     async def connect(self, websocket: WebSocket, client_id: int) -> UserConnection:
         await websocket.accept()
