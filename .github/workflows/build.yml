@@ -1,10 +1,16 @@
 name: Docker Build
+name: Build and deploy
 
 on:
   push:
     branches:
       - main
       - fergus/ci
+
+# cancels when head gets updated
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}-${{ github.actor }}
+  cancel-in-progress: true
 
 jobs:
   docker:
