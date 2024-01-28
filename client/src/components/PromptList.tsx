@@ -20,7 +20,7 @@ const PromptList = ({ prompts }: IProps) => {
   const [newState, setNewState] = useState(false);
 
   return (
-    <div className="-ml-20 my-20 mr-20 absolute z-100 top-0 right-0">
+    <div className="absolute top-1/2 h-fit bottom-0 z-10 bg-red-300 mx-20 rounded justify-center items-center">
       <div className="flex flex-col gap-4 font-bold text-white">
         {prompts.map(i => {
           return (
