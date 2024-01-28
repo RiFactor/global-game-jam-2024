@@ -12,6 +12,7 @@ from dataclasses import dataclass
 logger = logging.getLogger("uvicorn." + __name__)
 
 ROUND_WAIT_TIME = 5 # seconds
+PROMPT_TIME_WAIT = 5 # seconds
 
 KEY_PRESSED = "keyPress"
 TEAM_ASSIGN = "teamAssignment"
@@ -19,6 +20,7 @@ KEY_BUFFER = "keyBuffer"
 SETUP = "setup"
 SUBMISSION = "submission"
 ROUND_OVER = "roundOver"
+SEND_HINT = "prompt"
 
 
 @dataclass
@@ -30,6 +32,10 @@ class Event:
     def from_json(text: str) -> "Event":
         data = json.loads(text)
         return Event(data["eventType"], data["data"])
+
+    @staticmethod
+    def send_hint(cont: bool, hint: str) -> "Event":
+        return Event(SEND_HINT, dict(continued=int(cont), prompt=hint))
 
     @staticmethod
     def team_assign(uid: int, team: int, playernum) -> "Event":
@@ -143,25 +149,39 @@ class ConnectionManager:
         self.usermap: dict[int, UserConnection] = {}
         self.team = {1: [], 2: []}
         self.score = {1: 0, 2: 0}
-        self.buffers: dict[int, list[dict]] = {1: [], 2: []}
+        self._init_empty_buffers()
         self.prompts = prompts
         self.current_prompt : tuple[str, list[str]] | None = None
+
+    def _init_empty_buffers(self) -> None:
+        self.buffers: dict[int, list[dict]] = {1: [], 2: []}
 
     def ready(self) -> bool:
         return len(self.usermap) == 4
 
     async def start(self) -> None:
         logger.info("Starting round")
+        # clear whatever is in the current buffers
+        self._init_empty_buffers()
 
         self.current_prompt = random.choice(self.prompts)
-        key, hints = self.current_prompt[0], self.current_prompt[1:]
+        key, hints = self.current_prompt
 
         logger.info("Prompt is: %s", key)
         layout = [len(i) for i in key.split(" ")]
-        await self.broadcast(Event.setup(layout).to_json())
 
-        # todo: send the hints later
-        _ = hints
+        await self.broadcast(Event.setup(layout).to_json())
+        await self._recursive_send_hints(False, hints, 1, len(hints))
+
+
+    async def _recursive_send_hints(self, cont: bool, hints: list[str], count: int, total_number: int) -> None:
+        logger.info("Sending hint %s of %s", count, total_number)
+        await self.broadcast(Event.send_hint(cont, hints[0]).to_json())
+
+        # queue up the next hint if there is one
+        if len(hints) > 1:
+            await asyncio.sleep(PROMPT_TIME_WAIT)
+            await self._recursive_send_hints(True, hints[1:], count + 1, total_number)
 
     def get_key(self) -> str:
         if self.current_prompt:
