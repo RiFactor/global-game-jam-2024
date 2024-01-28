@@ -68,6 +68,8 @@ const MainPage = () => {
           case "setup":
             events.setup(event, setGameState, setWordLengths, setOwnAnswers, setEnemyAnswers);
             break;
+          case "roundOver":
+            events.roundOver(event, user_data ? user_data.team : -1, setGameState, setWinState);
         }
       };
     }

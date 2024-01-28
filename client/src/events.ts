@@ -3,6 +3,7 @@ import KeyBuffer from "./data/keyBuffer";
 import KeyPress from "./data/keyPress";
 import { permittedKeysOne, permittedKeysTwo } from "./constants/keyboard";
 import GameState from "./gamestates/GameState";
+import { WaitingForNextRoundProps } from "./gamestates/WaitingForNextRound";
 
 export function sendKey(key: string) {
   return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
@@ -53,4 +54,13 @@ export function setup(event: any, setGameState: (state: GameState) => void, setW
   setOwnAnswers([]);
   setEnemyAnswers([]);
   setGameState(GameState.PlayingRound);
+}
+
+export function roundOver(event: any, myTeamId: number, setGameState: (state: GameState) => void, setWinState: (state: WaitingForNextRoundProps) => void) {
+  const roundOver = event.data as RoundOver;
+  setWinState({
+    winner: myTeamId === roundOver.winningTeam,
+    winningText: roundOver.winningWord
+  });
+  setGameState(GameState.WaitingForNextRound);
 }
