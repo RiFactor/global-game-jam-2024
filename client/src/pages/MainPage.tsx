@@ -31,7 +31,7 @@ const MainPage = () => {
   const [submissions, setSubmissions] = useState<string[]>([]);
 
   useEffect(() => {
-    const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
+    const newWs = new WebSocket(`${process.env.REACT_APP_WEBSOCKET_PREFIX}://${window.location.host}/ws/${client_id}`);
     console.log(client_id);
     setWs(newWs);
     // return () => {
