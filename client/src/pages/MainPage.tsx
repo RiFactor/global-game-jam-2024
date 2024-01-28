@@ -88,19 +88,6 @@ const MainPage = () => {
     };
   }, [ws, allowList, gameState]);
 
-  // TODO is this needed?
-  function sendMessage(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const input = document.getElementById("messageText") as HTMLInputElement;
-
-    if (input && ws) {
-      // pass the key to the server in json format
-      ws.send(events.sendKey(input.value));
-      // clear the input value
-      input.value = "";
-    }
-  }
-
   var gameStateUi: ReactElement;
   switch (gameState) {
     case GameState.WaitingForPlayers:
