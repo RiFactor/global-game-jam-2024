@@ -11,6 +11,7 @@ import RoundState from "../gamestates/RoundState";
 import WaitingForPlayers from "../gamestates/WaitingForPlayers";
 import { WaitingForNextRound, WaitingForNextRoundProps } from "../gamestates/WaitingForNextRound";
 import GameState from "../gamestates/GameState";
+import Submission from "../data/submission";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -28,6 +29,7 @@ const MainPage = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.WaitingForPlayers);
   const [winState, setWinState] = useState<WaitingForNextRoundProps>({ winner: false, winningText: "" });
   const [prompts, setPrompts] = useState<string[]>([]);
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);
@@ -48,8 +50,8 @@ const MainPage = () => {
           case "teamAssignment":
             events.teamAssignment(event, setUserData, setAllowList);
             break;
-          case "submissionState":
-            events.submissionState(event);
+          case "submission":
+            events.submission(event, submissions, setSubmissions);
             break;
           case "keyBuffer":
             if (user_data) {
