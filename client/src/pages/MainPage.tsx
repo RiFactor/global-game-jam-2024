@@ -98,12 +98,8 @@ const MainPage = () => {
   }
 
   return (
-    <div
-      className="flex flex-col items-center bg-orange-300 w-full h-full"
-      // style={{ backgroundImage: `url(${MoonStationImage})` }}
-    >
-      {/* <img src={MoonStationImage} alt="" role="presentation" className="-z-2" width={"100%"} height={"100%"} /> */}
-      <div className="w-full h-full flex">
+    <div className="flex flex-col items-center bg-orange-300 w-full h-full">
+      <div className="w-full h-full flex relative">
         <AppProvider value={pixiApp}>
           <FullScreenStage>
             <MainPageBackground />
