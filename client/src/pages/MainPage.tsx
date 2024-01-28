@@ -70,6 +70,7 @@ const MainPage = () => {
             break;
           case "roundOver":
             events.roundOver(event, user_data ? user_data.team : -1, setGameState, setWinState);
+            break;
         }
       };
     }

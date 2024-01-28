@@ -4,3 +4,5 @@ type RoundOver = {
     "team1score": number,
     "team2score": number
 }
+
+export default RoundOver;

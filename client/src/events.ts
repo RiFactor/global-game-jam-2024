@@ -4,6 +4,7 @@ import KeyPress from "./data/keyPress";
 import { permittedKeysOne, permittedKeysTwo } from "./constants/keyboard";
 import GameState from "./gamestates/GameState";
 import { WaitingForNextRoundProps } from "./gamestates/WaitingForNextRound";
+import RoundOver from "./data/roundOver";
 
 export function sendKey(key: string) {
   return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
