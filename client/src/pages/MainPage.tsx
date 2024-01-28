@@ -11,6 +11,7 @@ import GameState from "../gamestates/GameState";
 import RoundState from "../gamestates/RoundState";
 import { WaitingForNextRound, WaitingForNextRoundProps } from "../gamestates/WaitingForNextRound";
 import WaitingForPlayers from "../gamestates/WaitingForPlayers";
+import DisplayAnswers from "../components/DisplayAnswers";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -120,7 +121,10 @@ const MainPage = () => {
             </FullScreenStage>
           </AppProvider>
         </div>
-        <PromptList prompts={prompts} />
+        <div className="flex gap-2">
+          <DisplayAnswers submissions={submissions} />
+          <PromptList prompts={prompts} />
+        </div>
       </div>
     </div>
   );
