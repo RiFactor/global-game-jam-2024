@@ -29,7 +29,7 @@ const MainPage = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.WaitingForPlayers);
   const [winState, setWinState] = useState<WaitingForNextRoundProps>({ winner: false, winningText: "" });
   const [prompts, setPrompts] = useState<string[]>([]);
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [submissions, setSubmissions] = useState<string[]>([]);
 
   useEffect(() => {
     const newWs = new WebSocket(`ws://${window.location.host}/ws/${client_id}`);

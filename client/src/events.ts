@@ -25,11 +25,11 @@ export function teamAssignment(
 
 export function submission(
   event: any,
-  currentSubmissions: Submission[], 
-  setSubmissions: (update: SetStateAction<Submission[]>) => void
+  currentSubmissions: string[], 
+  setSubmissions: (update: SetStateAction<string[]>) => void
 ) {
   const newSubmission = event.data as Submission
-  setSubmissions([...currentSubmissions, newSubmission])
+  setSubmissions([...currentSubmissions, newSubmission.submission])
 }
 
 export function keyBuffer(
