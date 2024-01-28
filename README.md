@@ -19,7 +19,7 @@
   |     [][][][][][][][][]        |  |_|_|
   |          [         ]          |  |   |
   \_______________________________/  \___/
-                                                                                          ... please
+                                                                                    ... please laugh
 ```
 
 - [global-game-jam](https://globalgamejam.org/games/2024/please-laugh-8)
