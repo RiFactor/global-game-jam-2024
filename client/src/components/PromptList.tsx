@@ -14,7 +14,7 @@ interface IProps {
 
 const PromptList = ({ prompts }: IProps) => {
   return (
-    <div className="absolute top-1/2 h-fit bottom-0 z-10 bg-blue-300 mx-20 rounded max-h-[50vh] mb-20 opacity-95">
+    <div className="absolute grow left-1/4 top-1/2 h-fit bottom-0 z-10 bg-blue-300 mx-20 rounded max-h-[50vh] mb-20 opacity-95">
       <div className="flex flex-col gap-4 font-bold text-white overflow-clip">
         {prompts.map(i => {
           return (
