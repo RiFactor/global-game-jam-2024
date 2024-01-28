@@ -2,6 +2,7 @@ import UserData from "./data/UserData";
 import KeyBuffer from "./data/keyBuffer";
 import KeyPress from "./data/keyPress";
 import { permittedKeysOne, permittedKeysTwo } from "./constants/keyboard";
+import GameState from "./gamestates/GameState";
 
 export function sendKey(key: string) {
   return `{"eventType":"keyPress", "data":{"value": "${key}"}}`;
@@ -47,8 +48,9 @@ export function keyBuffer(event: any, myTeamId: number, setOwnAnswers: (keys: Ke
     }
 }
 
-export function setup(event: any, setWordLengths: (wordLengths: number[]) => void, setOwnAnswers: (keys: KeyPress[]) => void, setEnemyAnswers: (keys: KeyPress[]) => void) {
+export function setup(event: any, setGameState: (state: GameState) => void, setWordLengths: (wordLengths: number[]) => void, setOwnAnswers: (keys: KeyPress[]) => void, setEnemyAnswers: (keys: KeyPress[]) => void) {
   setWordLengths(event.data.bufferLayout);
   setOwnAnswers([]);
   setEnemyAnswers([]);
+  setGameState(GameState.PlayingRound);
 }

@@ -10,15 +10,10 @@ import * as events from "../events";
 import RoundState from "../gamestates/RoundState";
 import WaitingForPlayers from "../gamestates/WaitingForPlayers";
 import { WaitingForNextRound, WaitingForNextRoundProps } from "../gamestates/WaitingForNextRound";
+import GameState from "../gamestates/GameState";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
-
-enum GameState {
-  WaitingForPlayers,
-  PlayingRound,
-  WaitingForNextRound
-}
 
 const MainPage = () => {
   // BED says which user / side of keyboard
@@ -71,7 +66,7 @@ const MainPage = () => {
             events.keyPress(event);
             break;
           case "setup":
-            events.setup(event, setWordLengths, setOwnAnswers, setEnemyAnswers);
+            events.setup(event, setGameState, setWordLengths, setOwnAnswers, setEnemyAnswers);
             break;
         }
       };
