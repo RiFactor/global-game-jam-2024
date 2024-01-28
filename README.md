@@ -11,12 +11,12 @@
                           __                                                      /\____/
                         /` ,\__                                                   \_/__/
                        |    ).-'
-   ___________________/ .--'______          "Sponsored byAirDnB, domiyes, pizzahat & beesechurgers"
-  |                  / /          |                 - a 5 Player interactive web browser video game
-  |    ,      _.==''`  \          |                 - compete in pairs to answer prompts
-  |  .'(  _.='         |          |                 - Written in 48hrs by 4 sleep deprived devs
-  | {   ``  _.='       |          |                 - created as entry for 2024 GGJ
-  |  {    \`     ;    /           |
+   ___________________/ .--'______  "Brought to you by by AirDnB, Domiyes, Pizzahat & Beesechurgers"
+  |                  / /          |                 - Four Player interactive web browser game
+  |    ,      _.==''`  \          |                 - Compete in pairs to answer prompts
+  |  .'(  _.='         |          |                 - The keyboard is split with you team member
+  | {   ``  _.='       |          |                 - Written in 48hrs by 4 sleep deprived devs
+  |  {    \`     ;    /           |                 - 2024 Southampton University Global Game Jam
   |   `.   `'=..'  .='            |   ___
   .-----`=._    .='---------------. /     \
   |   [][]['-`\\`_|_][][][][][]   |/     _/
