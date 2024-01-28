@@ -143,15 +143,20 @@ class ConnectionManager:
         self.usermap: dict[int, UserConnection] = {}
         self.team = {1: [], 2: []}
         self.score = {1: 0, 2: 0}
-        self.buffers: dict[int, list[dict]] = {1: [], 2: []}
+        self._init_empty_buffers()
         self.prompts = prompts
         self.current_prompt : tuple[str, list[str]] | None = None
+
+    def _init_empty_buffers(self) -> None:
+        self.buffers: dict[int, list[dict]] = {1: [], 2: []}
 
     def ready(self) -> bool:
         return len(self.usermap) == 4
 
     async def start(self) -> None:
         logger.info("Starting round")
+        # clear whatever is in the current buffers
+        self._init_empty_buffers()
 
         self.current_prompt = random.choice(self.prompts)
         key, hints = self.current_prompt[0], self.current_prompt[1:]
