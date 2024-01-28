@@ -1,13 +1,13 @@
 import { AppProvider } from "@pixi/react";
 import { Application } from "pixi.js";
 import React, { useEffect, useState } from "react";
-import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
 import FullScreenStage from "../components/FullScreenStage";
 import MainPageBackground from "../components/MainPageBackground";
 import PromptList from "../components/PromptList";
 import UserData from "../data/UserData";
 import KeyPress from "../data/keyPress";
 import * as events from "../events";
+import RoundState from "../gamestates/RoundState";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -107,20 +107,11 @@ const MainPage = () => {
         <AppProvider value={pixiApp}>
           <FullScreenStage>
             <MainPageBackground />
-            <AnswerLengthIndicator
-              myUserId={user_data?.userid}
-              screenFraction={0.3}
-              spacing={10}
+            <RoundState
               wordLengths={wordLengths}
-              currentAnswer={ownAnswers}
-              screenFractionOffset={0.1}
-            />
-            <AnswerLengthIndicator
-              screenFraction={0.3}
-              spacing={10}
-              wordLengths={wordLengths}
-              currentAnswer={enemyAnswers}
-              screenFractionOffset={0.6}
+              userId={user_data?.userid}
+              ownAnswers={ownAnswers}
+              enemyAnswers={enemyAnswers}
             />
           </FullScreenStage>
         </AppProvider>
