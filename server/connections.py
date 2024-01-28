@@ -4,16 +4,21 @@ from fastapi import WebSocket, WebSocketDisconnect
 import logging
 import json
 import random
+import asyncio
 
 from dataclasses import dataclass
 
 # prepend uvicorn so it all uses the same handler
 logger = logging.getLogger("uvicorn." + __name__)
 
+ROUND_WAIT_TIME = 5 # seconds
+
 KEY_PRESSED = "keyPress"
 TEAM_ASSIGN = "teamAssignment"
 KEY_BUFFER = "keyBuffer"
 SETUP = "setup"
+SUBMISSION = "submission"
+ROUND_OVER = "roundOver"
 
 
 @dataclass
@@ -37,6 +42,14 @@ class Event:
     @staticmethod
     def setup(layout: list[int]) -> "Event":
         return Event(SETUP, dict(bufferLayout=layout))
+
+    @staticmethod
+    def round_over(team: int, word: str, score1: int, score2: int) -> "Event":
+        return Event(ROUND_OVER, {"winningTeam": team, "winningWord": word, "team1score": score1, "team2score": score2})
+
+    @staticmethod
+    def submission(team: int, word: str, correct: bool) -> "Event":
+        return Event(SUBMISSION, dict(team=team, submission=word, correct=int(correct)))
 
     def to_json(self) -> str:
         event = dict(eventType=self.eventType, data=self.data)
@@ -88,12 +101,15 @@ class UserConnection:
             logger.exception("JSON decoder error")
             return
 
-        logger.info("%s event from %s", event.eventType, self.identity)
+        logger.debug("%s event from %s", event.eventType, self.identity)
 
         if event.eventType == KEY_PRESSED:
             # is there space in the buffer
             if self.manager.current_prompt:
-                if len(self.manager.buffers[self.team]) >= len(self.manager.current_prompt[0]):
+                key = self.manager.get_key()
+                prompt_length = len(key)
+
+                if len(self.manager.buffers[self.team]) >= prompt_length:
                     # clear the buffer
                     logger.debug("Clearing team %s buffer", self.team)
                     self.manager.buffers[self.team].clear()
@@ -103,6 +119,16 @@ class UserConnection:
                         dict(key=event.data["value"],  userid=self.identity)
                     )
                 await self.manager.broadcast_buffer(self.team)
+
+                # if the buffers are now the same length
+                if len(self.manager.buffers[self.team]) == prompt_length:
+                    word = self.manager.get_submission(self.team)
+                    if word.lower() == key:
+                        logger.info("Team %s is correct", self.team)
+                        await self.manager.announce_winner(self.team, word)
+                    else:
+                        logger.info("Team %s is incorrect", self.team)
+                        await self.manager.broadcast(Event.submission(self.team, word, False).to_json())
             else:
                 # no further processing whilst there is no prompt
                 return
@@ -112,9 +138,11 @@ class UserConnection:
 
 
 class ConnectionManager:
+
     def __init__(self, prompts: list[tuple[str, list[str]]]):
         self.usermap: dict[int, UserConnection] = {}
         self.team = {1: [], 2: []}
+        self.score = {1: 0, 2: 0}
         self.buffers: dict[int, list[dict]] = {1: [], 2: []}
         self.prompts = prompts
         self.current_prompt : tuple[str, list[str]] | None = None
@@ -123,16 +151,24 @@ class ConnectionManager:
         return len(self.usermap) == 4
 
     async def start(self) -> None:
-        logger.info("Starting game")
+        logger.info("Starting round")
 
         self.current_prompt = random.choice(self.prompts)
         key, hints = self.current_prompt[0], self.current_prompt[1:]
 
-        layout = [len(key)]
+        logger.info("Prompt is: %s", key)
+        layout = [len(i) for i in key.split(" ")]
         await self.broadcast(Event.setup(layout).to_json())
 
         # todo: send the hints later
         _ = hints
+
+    def get_key(self) -> str:
+        if self.current_prompt:
+            key = self.current_prompt[0].replace(" ", "")
+            return key.lower()
+        raise Exception("No prompt")
+
 
     async def connect(self, websocket: WebSocket, client_id: int) -> UserConnection:
         await websocket.accept()
@@ -184,3 +220,20 @@ class ConnectionManager:
     async def broadcast_buffer(self, team: int) -> None:
         logger.debug("Broadcasting buffer of team %s", team)
         await self.broadcast(Event.key_buffer(team, self.buffers[team]).to_json())
+
+    async def announce_winner(self, team: int, word: str) -> None:
+        # set current prompt to none to stop listening to new keys
+        self.current_prompt = None
+
+        # send out announcements / scores
+        self.score[team] += 1
+        await self.broadcast(Event.submission(team, word, True).to_json())
+        await self.broadcast(Event.round_over(team, word, self.score[1], self.score[2]).to_json())
+
+        # wait a few seconds, then start next round
+        await asyncio.sleep(ROUND_WAIT_TIME)
+        await self.start()
+
+    def get_submission(self, team: int) -> str:
+        data = self.buffers[team]
+        return "".join(i["key"] for i in data)
