@@ -4,7 +4,7 @@ import UserData from "../data/UserData";
 import KeyPress from "../data/keyPress";
 
 type RoundStateProps = {
-    userData?: UserData,
+    userData?: UserData | null,
     wordLengths: number[],
     ownAnswers: KeyPress[],
     enemyAnswers: KeyPress[]

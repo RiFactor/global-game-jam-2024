@@ -98,7 +98,7 @@ const MainPage = () => {
       gameStateUi = (
         <RoundState
           wordLengths={wordLengths}
-          userId={userData?.userid}
+          userData={userData}
           ownAnswers={ownAnswers}
           enemyAnswers={enemyAnswers}
         />
