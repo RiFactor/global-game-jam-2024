@@ -106,7 +106,8 @@ class UserConnection:
         if event.eventType == KEY_PRESSED:
             # is there space in the buffer
             if self.manager.current_prompt:
-                prompt_length = len(self.manager.current_prompt[0])
+                key = self.manager.get_key()
+                prompt_length = len(key)
 
                 if len(self.manager.buffers[self.team]) >= prompt_length:
                     # clear the buffer
@@ -122,7 +123,7 @@ class UserConnection:
                 # if the buffers are now the same length
                 if len(self.manager.buffers[self.team]) == prompt_length:
                     word = self.manager.get_submission(self.team)
-                    if word.lower() == self.manager.get_key():
+                    if word.lower() == key:
                         logger.info("Team %s is correct", self.team)
                         await self.manager.announce_winner(self.team, word)
                     else:
