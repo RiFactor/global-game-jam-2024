@@ -9,6 +9,7 @@ import KeyPress from "../data/keyPress";
 import * as events from "../events";
 import RoundState from "../gamestates/RoundState";
 import WaitingForPlayers from "../gamestates/WaitingForPlayers";
+import WaitingForNextRound from "../gamestates/WaitingForNextRound";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({ resizeTo: window });
@@ -78,7 +79,7 @@ const MainPage = () => {
 
   useEffect(() => {
     const handleKeyUp = (event: any) => {
-      const is_allowed = allowList.includes(event.key.toLowerCase());
+      const is_allowed = gameState == GameState.PlayingRound && allowList.includes(event.key.toLowerCase());
       is_allowed ? console.log("send to server") : console.log("ignore");
       if (is_allowed && ws) {
         ws.send(events.sendKey(event.key));
@@ -90,7 +91,7 @@ const MainPage = () => {
     return () => {
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [ws, allowList]);
+  }, [ws, allowList, gameState]);
 
   // TODO is this needed?
   function sendMessage(event: React.FormEvent<HTMLFormElement>) {
