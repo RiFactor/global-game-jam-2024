@@ -1,15 +1,15 @@
 import { AppProvider } from "@pixi/react";
 import { Application } from "pixi.js";
-import FullScreenStage from "../components/FullScreenStage";
-import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
-import KeyPress from "../data/keyPress";
 import React, { useEffect, useState } from "react";
+import AnswerLengthIndicator from "../components/AnswerLengthIndicator";
+import FullScreenStage from "../components/FullScreenStage";
+import MainPageBackground from "../components/MainPageBackground";
+import PromptList from "../components/PromptList";
+import TeamDisplay from "../components/TeamDisplay";
 import { permittedKeysOne, permittedKeysTwo } from "../constants/keyboard";
 import UserData from "../data/UserData";
+import KeyPress from "../data/keyPress";
 import * as events from "../events";
-import TeamDisplay from "../components/TeamDisplay";
-import MainPageBackground from "../components/MainPageBackground";
-import MoonStationImage from "../assets/moon-station.jpeg";
 
 // TODO: is there a better way to do this than just declaring here?
 const pixiApp = new Application({
@@ -116,7 +116,7 @@ const MainPage = () => {
       // style={{ backgroundImage: `url(${MoonStationImage})` }}
     >
       {/* <img src={MoonStationImage} alt="" role="presentation" className="-z-2" width={"100%"} height={"100%"} /> */}
-      <div className="w-screen h-screen">
+      <div className="w-full h-full flex">
         <AppProvider value={pixiApp}>
           <FullScreenStage>
             <MainPageBackground />
@@ -138,6 +138,7 @@ const MainPage = () => {
             />
           </FullScreenStage>
         </AppProvider>
+        <PromptList />
       </div>
     </div>
   );
